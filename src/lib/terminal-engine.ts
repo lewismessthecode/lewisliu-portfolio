@@ -1,7 +1,8 @@
 export interface TerminalLine {
-  readonly type: 'input' | 'output' | 'error' | 'system'
+  readonly type: 'input' | 'output' | 'error' | 'system' | 'animation'
   readonly text: string
   readonly isHtml?: boolean
+  readonly animationId?: string
 }
 
 export interface Command {
@@ -24,6 +25,45 @@ const INITIAL_STATE: TerminalState = {
   currentInput: '',
 }
 
+function levenshtein(a: string, b: string): number {
+  const m = a.length
+  const n = b.length
+  const dp: number[][] = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0))
+
+  for (let i = 0; i <= m; i++) dp[i][0] = i
+  for (let j = 0; j <= n; j++) dp[0][j] = j
+
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + cost
+      )
+    }
+  }
+
+  return dp[m][n]
+}
+
+const UNIX_HINTS: ReadonlyMap<string, string> = new Map([
+  ['ls', "Try 'help' to see available commands."],
+  ['cd', "Navigation works via commands: about, projects, garden, etc."],
+  ['cat', "To read content, use: read <slug>"],
+  ['man', "Try: help"],
+  ['pwd', "~/lewis/portfolio"],
+  ['sudo', "Nice try. No root access here."],
+  ['vim', "This terminal is already perfect. No editor needed."],
+  ['nano', "This terminal is already perfect. No editor needed."],
+  ['exit', "There is no escape. But try 'help' for things to do."],
+  ['rm', "Whoa there. Nothing to delete in this terminal."],
+  ['mkdir', "This is a read-only terminal. Try 'projects' instead."],
+  ['ssh', "You're already connected to lewis@portfolio."],
+  ['ping', "Pong! Lewis is reachable at 'contact'."],
+  ['grep', "Try 'garden --tag <tag>' to filter content."],
+])
+
 export function createTerminalEngine(commands: ReadonlyMap<string, Command>) {
   let state: TerminalState = { ...INITIAL_STATE }
   const listeners: Set<(state: TerminalState) => void> = new Set()
@@ -38,11 +78,26 @@ export function createTerminalEngine(commands: ReadonlyMap<string, Command>) {
     state = { ...state, lines: [...state.lines, ...newLines] }
   }
 
+  function findFuzzyMatch(input: string): string | null {
+    let bestMatch: string | null = null
+    let bestDistance = Infinity
+
+    for (const name of commands.keys()) {
+      const dist = levenshtein(input, name)
+      if (dist <= 2 && dist < bestDistance) {
+        bestDistance = dist
+        bestMatch = name
+      }
+    }
+
+    return bestMatch
+  }
+
   function executeCommand(raw: string): void {
     const trimmed = raw.trim()
     if (!trimmed) return
 
-    addLines([{ type: 'input', text: `$ / > ${trimmed}` }])
+    addLines([{ type: 'input', text: `lewis@portfolio:~$ ${trimmed}` }])
 
     const newHistory = [...state.history.filter((h) => h !== trimmed), trimmed]
     state = { ...state, history: newHistory, historyIndex: -1 }
@@ -56,12 +111,29 @@ export function createTerminalEngine(commands: ReadonlyMap<string, Command>) {
       const output = command.execute(args)
       addLines(output)
     } else {
-      addLines([
-        {
-          type: 'error',
-          text: `Unknown command: ${cmdName}. Type 'help' for available commands.`,
-        },
-      ])
+      // Check for UNIX command hints
+      const hint = UNIX_HINTS.get(cmdName)
+      if (hint) {
+        addLines([{ type: 'system', text: hint }])
+      } else {
+        // Try fuzzy matching
+        const fuzzy = findFuzzyMatch(cmdName)
+        if (fuzzy) {
+          addLines([
+            {
+              type: 'error',
+              text: `Unknown command: ${cmdName}. Did you mean: ${fuzzy}?`,
+            },
+          ])
+        } else {
+          addLines([
+            {
+              type: 'error',
+              text: `Unknown command: ${cmdName}. Type 'help' for available commands.`,
+            },
+          ])
+        }
+      }
     }
 
     notify()

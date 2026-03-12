@@ -2,6 +2,27 @@ import type { Command, TerminalLine } from './terminal-engine'
 import { THEMES, applyTheme, loadSavedTheme } from './themes'
 import { BACKGROUNDS, applyBackground, loadSavedBackground } from './backgrounds'
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+function safeUrl(url: string): string {
+  try {
+    const parsed = new URL(url)
+    if (parsed.protocol === 'https:' || parsed.protocol === 'http:' || parsed.protocol === 'mailto:') {
+      return escapeHtml(url)
+    }
+    return '#'
+  } catch {
+    return '#'
+  }
+}
+
 export interface SiteData {
   readonly about: string
   readonly skills: ReadonlyArray<{ readonly category: string; readonly items: readonly string[] }>
@@ -60,7 +81,15 @@ export function createCommands(
   commands.set('about', {
     name: 'about',
     description: 'About me',
-    execute: () => [output(''), output(data.about), output('')],
+    execute: () => [
+      output(''),
+      output(data.about),
+      output(''),
+      output('  Open to remote opportunities — reach out via "contact".'),
+      output(''),
+      output('  See also: skills, projects, resume'),
+      output(''),
+    ],
   })
 
   commands.set('skills', {
@@ -73,6 +102,8 @@ export function createCommands(
         lines.push(output(`    ${group.items.join(', ')}`))
         lines.push(output(''))
       }
+      lines.push(output('  See also: projects, resume'))
+      lines.push(output(''))
       return lines
     },
   })
@@ -89,7 +120,7 @@ export function createCommands(
         if (p.github) {
           lines.push(
             output(
-              `       <a href="${p.github}" target="_blank" rel="noopener">[GitHub: ${p.github.replace('https://', '')}]</a>`,
+              `       <a href="${safeUrl(p.github)}" target="_blank" rel="noopener">[GitHub: ${escapeHtml(p.github.replace('https://', ''))}]</a>`,
               true
             )
           )
@@ -97,7 +128,7 @@ export function createCommands(
         if (p.demo) {
           lines.push(
             output(
-              `       <a href="${p.demo}" target="_blank" rel="noopener">[Demo: ${p.demo.replace('https://', '')}]</a>`,
+              `       <a href="${safeUrl(p.demo)}" target="_blank" rel="noopener">[Demo: ${escapeHtml(p.demo.replace('https://', ''))}]</a>`,
               true
             )
           )
@@ -105,6 +136,8 @@ export function createCommands(
         lines.push(output(''))
       })
       lines.push(output("    Type 'project <number>' for details."))
+      lines.push(output(''))
+      lines.push(output('  See also: skills, resume'))
       lines.push(output(''))
       return lines
     },
@@ -114,6 +147,12 @@ export function createCommands(
     name: 'project',
     description: 'Show project details (project <number>)',
     execute: (args) => {
+      // No args → show project list
+      if (args.length === 0) {
+        const projectsCmd = commands.get('projects')
+        return projectsCmd ? projectsCmd.execute([]) : []
+      }
+
       const num = parseInt(args[0], 10)
       if (isNaN(num) || num < 1 || num > data.projects.length) {
         return [
@@ -143,7 +182,7 @@ export function createCommands(
       if (p.github) {
         lines.push(
           output(
-            `  <a href="${p.github}" target="_blank" rel="noopener">GitHub: ${p.github}</a>`,
+            `  <a href="${safeUrl(p.github)}" target="_blank" rel="noopener">GitHub: ${escapeHtml(p.github)}</a>`,
             true
           )
         )
@@ -151,7 +190,7 @@ export function createCommands(
       if (p.demo) {
         lines.push(
           output(
-            `  <a href="${p.demo}" target="_blank" rel="noopener">Demo: ${p.demo}</a>`,
+            `  <a href="${safeUrl(p.demo)}" target="_blank" rel="noopener">Demo: ${escapeHtml(p.demo)}</a>`,
             true
           )
         )
@@ -194,12 +233,16 @@ export function createCommands(
           lines.push(
             output(`    ${typeLabel} ${item.date}  ${item.title}    ${tags}`)
           )
+          lines.push(
+            output(`         Read: read ${item.slug}`)
+          )
         }
       }
 
       lines.push(output(''))
       lines.push(output("    Filter: 'garden --tag <tag>'"))
-      lines.push(output("    Read:   'read <slug>'"))
+      lines.push(output(''))
+      lines.push(output('  See also: projects, about'))
       lines.push(output(''))
       return lines
     },
@@ -252,21 +295,23 @@ export function createCommands(
         output('  * Contact:'),
         output(''),
         output(
-          `    Email:    <a href="mailto:${c.email}">${c.email}</a>`,
+          `    Email:    <a href="${safeUrl(`mailto:${c.email}`)}">${escapeHtml(c.email)}</a>`,
           true
         ),
         output(
-          `    GitHub:   <a href="https://github.com/${c.github}" target="_blank" rel="noopener">github.com/${c.github}</a>`,
+          `    GitHub:   <a href="${safeUrl(`https://github.com/${c.github}`)}" target="_blank" rel="noopener">github.com/${escapeHtml(c.github)}</a>`,
           true
         ),
         output(
-          `    Twitter:  <a href="https://twitter.com/${c.twitter}" target="_blank" rel="noopener">@${c.twitter}</a>`,
+          `    Twitter:  <a href="${safeUrl(`https://twitter.com/${c.twitter}`)}" target="_blank" rel="noopener">@${escapeHtml(c.twitter)}</a>`,
           true
         ),
         output(
-          `    LinkedIn: <a href="https://linkedin.com/in/${c.linkedin}" target="_blank" rel="noopener">linkedin.com/in/${c.linkedin}</a>`,
+          `    LinkedIn: <a href="${safeUrl(`https://linkedin.com/in/${c.linkedin}`)}" target="_blank" rel="noopener">linkedin.com/in/${escapeHtml(c.linkedin)}</a>`,
           true
         ),
+        output(''),
+        output('  See also: about, resume'),
         output(''),
       ]
     },
@@ -283,6 +328,8 @@ export function createCommands(
         '  <a href="/resume.pdf" target="_blank" rel="noopener">[Download PDF]</a>',
         true
       ),
+      output(''),
+      output('  See also: skills, projects, contact'),
       output(''),
     ],
   })
@@ -363,6 +410,14 @@ export function createCommands(
       applyBackground(name)
       return [system(`Background changed to ${bg.name}.`)]
     },
+  })
+
+  commands.set('matrix', {
+    name: 'matrix',
+    description: 'Enter the Matrix',
+    execute: () => [
+      { type: 'animation' as const, text: '', animationId: 'matrix' },
+    ],
   })
 
   commands.set('clear', {

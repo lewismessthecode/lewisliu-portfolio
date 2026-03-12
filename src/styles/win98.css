@@ -1,0 +1,611 @@
+/* ─── Win98 Design Tokens ─── */
+:root {
+  --win98-gray: #c0c0c0;
+  --win98-dark-gray: #808080;
+  --win98-light-gray: #dfdfdf;
+  --win98-white: #ffffff;
+  --win98-black: #000000;
+  --win98-title-blue: #000080;
+  --win98-title-blue-active: #0a246a;
+  --win98-title-text: #ffffff;
+  --win98-highlight: #0a246a;
+  --win98-sidebar-blue: #0b2f7e;
+}
+
+/* ─── Beveled Border Utilities ─── */
+.win98-outset {
+  border: 2px solid;
+  border-color: var(--win98-white) var(--win98-dark-gray) var(--win98-dark-gray) var(--win98-white);
+}
+
+.win98-inset {
+  border: 2px solid;
+  border-color: var(--win98-dark-gray) var(--win98-white) var(--win98-white) var(--win98-dark-gray);
+}
+
+/* ─── Win98 Window Chrome ─── */
+.win98-window {
+  background: var(--win98-gray);
+  border: 2px solid;
+  border-color: var(--win98-white) var(--win98-dark-gray) var(--win98-dark-gray) var(--win98-white);
+  box-shadow: 1px 1px 0 var(--win98-black);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.win98-titlebar {
+  height: 28px;
+  background: linear-gradient(90deg, var(--win98-title-blue-active) 0%, #1084d0 100%);
+  display: flex;
+  align-items: center;
+  padding: 0 3px;
+  gap: 4px;
+  user-select: none;
+  cursor: grab;
+  flex-shrink: 0;
+}
+
+.win98-titlebar:active {
+  cursor: grabbing;
+}
+
+.win98-titlebar-icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.win98-terminal-icon {
+  display: block;
+  width: 12px;
+  height: 10px;
+  background: var(--win98-black);
+  border: 1px solid var(--win98-white);
+  position: relative;
+}
+
+.win98-terminal-icon::after {
+  content: '>';
+  position: absolute;
+  top: -2px;
+  left: 1px;
+  font-size: 8px;
+  color: var(--win98-white);
+  line-height: 1;
+}
+
+.win98-titlebar-title {
+  flex: 1;
+  color: var(--win98-title-text);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  letter-spacing: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.win98-titlebar-buttons {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.win98-btn {
+  width: 18px;
+  height: 18px;
+  background: var(--win98-gray);
+  border: 2px solid;
+  border-color: var(--win98-white) var(--win98-dark-gray) var(--win98-dark-gray) var(--win98-white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  color: var(--win98-black);
+  line-height: 1;
+}
+
+.win98-btn:active {
+  border-color: var(--win98-dark-gray) var(--win98-white) var(--win98-white) var(--win98-dark-gray);
+}
+
+.win98-btn:focus-visible {
+  outline: 1px dotted var(--win98-black);
+  outline-offset: -4px;
+}
+
+.win98-btn-minimize span {
+  margin-top: 4px;
+}
+
+/* ─── Desktop Layout ─── */
+.win98-desktop {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.win98-desktop-area {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ─── Desktop Icons ─── */
+.win98-icons {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  z-index: 5;
+}
+
+.win98-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 72px;
+  cursor: pointer;
+  background: none;
+  border: 1px solid transparent;
+  padding: 4px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+}
+
+.win98-icon:focus-visible {
+  outline: 1px dotted #fff;
+}
+
+.win98-icon--selected {
+  background: rgba(0, 0, 128, 0.4);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.win98-icon-graphic {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+}
+
+.win98-icon-label {
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+/* Icon shapes */
+.icon-computer {
+  width: 28px;
+  height: 22px;
+  background: var(--win98-gray);
+  border: 2px solid;
+  border-color: var(--win98-white) var(--win98-dark-gray) var(--win98-dark-gray) var(--win98-white);
+  position: relative;
+}
+
+.icon-computer::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 4px;
+  background: var(--win98-gray);
+  border: 1px solid var(--win98-dark-gray);
+}
+
+.icon-computer::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: #000080;
+}
+
+.icon-folder {
+  width: 28px;
+  height: 22px;
+  background: #ffd700;
+  border-radius: 0 2px 2px 2px;
+  position: relative;
+  border: 1px solid #b8960f;
+}
+
+.icon-folder::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 0;
+  width: 12px;
+  height: 6px;
+  background: #ffd700;
+  border: 1px solid #b8960f;
+  border-bottom: none;
+  border-radius: 2px 2px 0 0;
+}
+
+.icon-globe {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #4488ff, #0044aa);
+  border: 2px solid #88aadd;
+  position: relative;
+  overflow: hidden;
+}
+
+.icon-globe::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    linear-gradient(90deg, transparent 45%, rgba(255,255,255,0.2) 50%, transparent 55%),
+    linear-gradient(0deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%);
+}
+
+.icon-envelope {
+  width: 28px;
+  height: 20px;
+  background: #f5f5dc;
+  border: 2px solid #b8a88a;
+  position: relative;
+}
+
+.icon-envelope::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 10px solid #ddd0b0;
+}
+
+.icon-document {
+  width: 22px;
+  height: 28px;
+  background: #fff;
+  border: 1px solid #999;
+  position: relative;
+}
+
+.icon-document::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 3px;
+  right: 3px;
+  height: 1px;
+  background: #999;
+  box-shadow: 0 4px 0 #999, 0 8px 0 #999, 0 12px 0 #999;
+}
+
+.icon-document::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 6px;
+  background: linear-gradient(225deg, var(--win98-gray) 50%, #999 50%);
+}
+
+/* ─── Taskbar ─── */
+.win98-taskbar {
+  height: 40px;
+  background: var(--win98-gray);
+  border-top: 2px solid var(--win98-white);
+  display: flex;
+  align-items: center;
+  padding: 2px 4px;
+  gap: 4px;
+  flex-shrink: 0;
+  z-index: 100;
+  position: relative;
+}
+
+/* ─── Start Button ─── */
+.win98-start-btn {
+  height: 32px;
+  padding: 0 8px;
+  background: var(--win98-gray);
+  border: 2px solid;
+  border-color: var(--win98-white) var(--win98-dark-gray) var(--win98-dark-gray) var(--win98-white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.win98-start-btn:active,
+.win98-start-btn--active {
+  border-color: var(--win98-dark-gray) var(--win98-white) var(--win98-white) var(--win98-dark-gray);
+}
+
+.win98-start-btn:focus-visible {
+  outline: 1px dotted var(--win98-black);
+  outline-offset: -4px;
+}
+
+/* CSS Windows logo */
+.win98-windows-logo {
+  display: grid;
+  grid-template-columns: 5px 5px;
+  grid-template-rows: 5px 5px;
+  gap: 1px;
+  width: 12px;
+  height: 12px;
+}
+
+.win98-logo-red { background: #ff0000; }
+.win98-logo-green { background: #00aa00; }
+.win98-logo-blue { background: #0000ff; }
+.win98-logo-yellow { background: #ffff00; }
+
+/* ─── Quick Launch ─── */
+.win98-quick-launch {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 4px;
+  border-left: 2px solid var(--win98-dark-gray);
+  border-right: 2px solid var(--win98-white);
+  height: 28px;
+}
+
+.win98-quick-launch-btn {
+  width: 24px;
+  height: 24px;
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 14px;
+  text-decoration: none;
+  color: var(--win98-black);
+}
+
+.win98-quick-launch-btn:hover {
+  border-color: var(--win98-white) var(--win98-dark-gray) var(--win98-dark-gray) var(--win98-white);
+}
+
+/* ─── Active Window Button ─── */
+.win98-task-btn {
+  height: 28px;
+  padding: 0 8px;
+  min-width: 140px;
+  max-width: 200px;
+  background: var(--win98-gray);
+  border: 2px solid;
+  border-color: var(--win98-dark-gray) var(--win98-white) var(--win98-white) var(--win98-dark-gray);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.win98-task-btn--active {
+  border-color: var(--win98-dark-gray) var(--win98-white) var(--win98-white) var(--win98-dark-gray);
+  background: repeating-conic-gradient(var(--win98-gray) 0% 25%, var(--win98-white) 0% 50%) 0 0 / 2px 2px;
+}
+
+/* ─── System Tray ─── */
+.win98-systray {
+  margin-left: auto;
+  height: 28px;
+  padding: 0 8px;
+  border: 2px solid;
+  border-color: var(--win98-dark-gray) var(--win98-white) var(--win98-white) var(--win98-dark-gray);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 11px;
+}
+
+.win98-systray-icon {
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.win98-systray-clock {
+  color: var(--win98-black);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Start Menu ─── */
+.win98-start-menu {
+  position: absolute;
+  bottom: 40px;
+  left: 2px;
+  width: 260px;
+  background: var(--win98-gray);
+  border: 2px solid;
+  border-color: var(--win98-white) var(--win98-dark-gray) var(--win98-dark-gray) var(--win98-white);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+  display: flex;
+  z-index: 200;
+}
+
+.win98-start-sidebar {
+  width: 28px;
+  background: linear-gradient(180deg, var(--win98-sidebar-blue) 0%, #0a1a4a 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.win98-start-sidebar-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  color: #ccc;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+.win98-start-items {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 2px 0;
+}
+
+.win98-start-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 12px;
+  text-align: left;
+  color: var(--win98-black);
+}
+
+.win98-start-item:hover,
+.win98-start-item:focus-visible {
+  background: var(--win98-highlight);
+  color: var(--win98-white);
+}
+
+.win98-start-item:focus-visible {
+  outline: 1px dotted var(--win98-white);
+  outline-offset: -2px;
+}
+
+.win98-start-item-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.win98-start-separator {
+  height: 1px;
+  margin: 2px 4px 2px 28px;
+  background: var(--win98-dark-gray);
+  border-bottom: 1px solid var(--win98-white);
+}
+
+/* ─── Theme Submenu ─── */
+.win98-submenu {
+  position: absolute;
+  left: 100%;
+  bottom: 0;
+  width: 160px;
+  background: var(--win98-gray);
+  border: 2px solid;
+  border-color: var(--win98-white) var(--win98-dark-gray) var(--win98-dark-gray) var(--win98-white);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+  padding: 2px 0;
+}
+
+.win98-start-item--has-submenu {
+  position: relative;
+}
+
+.win98-start-item--has-submenu::after {
+  content: '\25B6';
+  margin-left: auto;
+  font-size: 8px;
+}
+
+/* ─── Terminal StatusBar ─── */
+.terminal-statusbar {
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.terminal-statusbar-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.terminal-statusbar-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00ff41;
+  box-shadow: 0 0 4px #00ff41;
+}
+
+.terminal-statusbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.terminal-statusbar-sep {
+  opacity: 0.4;
+}
+
+/* ─── Hide on mobile ─── */
+@media (max-width: 768px) {
+  .win98-desktop {
+    display: none;
+  }
+
+  .win98-icons,
+  .win98-taskbar,
+  .win98-start-menu,
+  .terminal-statusbar {
+    display: none !important;
+  }
+}

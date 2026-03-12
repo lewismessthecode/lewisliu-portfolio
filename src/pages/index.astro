@@ -1,8 +1,11 @@
 ---
 import { getCollection } from 'astro:content'
-import Terminal from '../components/Terminal'
+import Desktop from '../components/Desktop'
 import type { SiteData } from '../lib/commands'
 import '../styles/terminal.css'
+import '../styles/win98.css'
+import '../styles/backgrounds.css'
+import '../styles/matrix-rain.css'
 
 const projectEntries = await getCollection('projects')
 const postEntries = await getCollection('posts')
@@ -128,7 +131,7 @@ const siteData: SiteData = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>
-    <Terminal client:load data={siteData} />
+    <Desktop client:load data={siteData} />
     <noscript>
       <div class="noscript-content">
         <h1>Lewis Liu</h1>
