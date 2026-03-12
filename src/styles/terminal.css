@@ -1,0 +1,416 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+/* Theme variables - defaults to hacker */
+:root {
+  --bg: #0a0a0a;
+  --text: #00ff41;
+  --text-dim: #00ff4180;
+  --accent: #00ff41;
+  --border: #00ff4133;
+  --glow: 0 0 10px #00ff4140;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  background: #008080;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Desktop background — fills viewport, centers the terminal window */
+.desktop-background {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #008080;
+  overflow: hidden;
+}
+
+/* Desktop settings — top-right background picker */
+.desktop-settings {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 20;
+}
+
+.desktop-bg-select {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 4px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  outline: none;
+  border-radius: 4px;
+}
+
+.desktop-bg-select:focus {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.desktop-bg-select option {
+  background: #222;
+  color: #fff;
+}
+
+/* Terminal wrapper — the window chrome */
+.terminal-wrapper {
+  position: relative;
+  width: 720px;
+  height: 480px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  resize: both;
+  min-width: 400px;
+  min-height: 300px;
+  max-width: 95vw;
+  max-height: 90vh;
+}
+
+/* Titlebar */
+.terminal-titlebar {
+  height: 36px;
+  background: #1a1a1a;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.traffic-lights {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.traffic-light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: filter 0.15s;
+}
+
+.traffic-light:hover {
+  filter: brightness(1.2);
+}
+
+.tl-close { background: #ff5f57; }
+.tl-minimize { background: #febc2e; }
+.tl-maximize { background: #28c840; }
+
+.terminal-titlebar-title {
+  flex: 1;
+  text-align: center;
+  color: #999;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+/* Terminal container */
+.terminal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  cursor: text;
+  background: var(--bg);
+  min-height: 0;
+}
+
+/* Terminal overlay (keeps .terminal-scanlines div inert) */
+.terminal-scanlines {
+  display: none;
+}
+
+/* Output area — scrollable, contains lines + input */
+.terminal-output {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  text-shadow: 0 0 2px var(--text);
+}
+
+.terminal-output::-webkit-scrollbar {
+  width: 6px;
+}
+
+.terminal-output::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+
+/* Boot text */
+.terminal-boot {
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--text);
+}
+
+/* Terminal lines */
+.terminal-line {
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 1.6em;
+}
+
+.terminal-line--input {
+  color: var(--text-dim);
+}
+
+.terminal-line--output {
+  color: var(--text);
+}
+
+.terminal-line--error {
+  color: #ff5555;
+}
+
+.terminal-line--system {
+  color: var(--accent);
+  font-style: italic;
+}
+
+/* Links in terminal output */
+.terminal-line a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.terminal-line a:hover {
+  text-shadow: var(--glow);
+}
+
+/* Input row — now inside the scrollable area */
+.terminal-input-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 0 16px;
+}
+
+.terminal-prompt {
+  color: var(--accent);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.terminal-input {
+  min-width: 0;
+  width: auto;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  outline: none;
+  caret-color: transparent;
+}
+
+/* Blinking cursor */
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.2em;
+  background: var(--accent);
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  flex-shrink: 0;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Mobile shortcuts */
+.terminal-mobile-shortcuts {
+  display: none;
+  padding: 8px;
+  gap: 6px;
+  overflow-x: auto;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.terminal-shortcut-btn {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.terminal-shortcut-btn:active {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ─── Pixel Art Background ─── */
+.desktop-background[data-bg="pixel"] {
+  background: linear-gradient(180deg,
+    #1a0533 0%,
+    #2d1b4e 20%,
+    #1e3a5f 40%,
+    #2d6b4f 70%,
+    #1a4a2e 85%,
+    #0d2818 100%
+  );
+}
+
+/* Pixel stars */
+.desktop-background[data-bg="pixel"]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 10% 8%, #fff 100%, transparent 100%),
+    radial-gradient(1px 1px at 25% 15%, #fff8 100%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 5%, #fff 100%, transparent 100%),
+    radial-gradient(1px 1px at 55% 12%, #fffa 100%, transparent 100%),
+    radial-gradient(1px 1px at 70% 3%, #fff 100%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 10%, #fff8 100%, transparent 100%),
+    radial-gradient(1px 1px at 15% 22%, #fff6 100%, transparent 100%),
+    radial-gradient(1px 1px at 60% 20%, #fff 100%, transparent 100%),
+    radial-gradient(1px 1px at 90% 18%, #fff8 100%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 5% 30%, #fff 100%, transparent 100%),
+    radial-gradient(1px 1px at 35% 28%, #fffa 100%, transparent 100%),
+    radial-gradient(1px 1px at 75% 25%, #fff6 100%, transparent 100%),
+    radial-gradient(1px 1px at 48% 32%, #fff 100%, transparent 100%),
+    radial-gradient(1px 1px at 20% 35%, #fff8 100%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 65% 8%, #fff 100%, transparent 100%);
+}
+
+/* Pixel sun / moon */
+.desktop-background[data-bg="pixel"]::after {
+  content: '';
+  position: absolute;
+  top: 12%;
+  right: 18%;
+  width: 40px;
+  height: 40px;
+  background: #ffe4a0;
+  border-radius: 50%;
+  box-shadow:
+    0 0 20px 8px #ffe4a060,
+    0 0 60px 20px #ffe4a020;
+  pointer-events: none;
+}
+
+/* ─── Mobile responsive ─── */
+@media (max-width: 768px) {
+  html, body {
+    font-size: 13px;
+  }
+
+  .desktop-background {
+    align-items: stretch;
+    justify-content: stretch;
+    background: var(--bg);
+  }
+
+  .desktop-background[data-bg="pixel"] {
+    background: var(--bg);
+  }
+
+  .desktop-background[data-bg="pixel"]::before,
+  .desktop-background[data-bg="pixel"]::after {
+    display: none;
+  }
+
+  .desktop-settings {
+    display: none;
+  }
+
+  .terminal-wrapper {
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .terminal-output {
+    padding: 12px;
+  }
+
+  .terminal-input-row {
+    padding: 8px 0 12px;
+  }
+
+  .terminal-mobile-shortcuts {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  html, body {
+    font-size: 12px;
+  }
+
+  .terminal-boot {
+    font-size: 10px;
+  }
+}
+
+/* Noscript fallback */
+.noscript-content {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'JetBrains Mono', monospace;
+  color: #00ff41;
+  background: #0a0a0a;
+}
+
+.noscript-content h1,
+.noscript-content h2 {
+  margin: 1.5rem 0 0.5rem;
+}
+
+.noscript-content p,
+.noscript-content li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.noscript-content a {
+  color: #00ff41;
+}

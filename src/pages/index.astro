@@ -1,0 +1,163 @@
+---
+import { getCollection } from 'astro:content'
+import Terminal from '../components/Terminal'
+import type { SiteData } from '../lib/commands'
+import '../styles/terminal.css'
+
+const projectEntries = await getCollection('projects')
+const postEntries = await getCollection('posts')
+const noteEntries = await getCollection('notes')
+
+const projects = projectEntries
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  .map((p) => ({
+    title: p.data.title,
+    description: p.data.description,
+    tags: p.data.tags,
+    github: p.data.github,
+    demo: p.data.demo,
+    body: p.body ?? '',
+  }))
+
+const garden = [
+  ...postEntries.map((p) => ({
+    slug: p.id.replace(/\.md$/, ''),
+    title: p.data.title,
+    date: p.data.date.toISOString().slice(0, 10),
+    tags: p.data.tags,
+    type: 'post' as const,
+    body: p.body ?? '',
+  })),
+  ...noteEntries.map((n) => ({
+    slug: n.id.replace(/\.md$/, ''),
+    title: n.data.title,
+    date: n.data.date.toISOString().slice(0, 10),
+    tags: n.data.tags,
+    type: 'note' as const,
+    body: n.body ?? '',
+  })),
+].sort((a, b) => b.date.localeCompare(a.date))
+
+const siteData: SiteData = {
+  about: `  Hi, I'm Lewis Liu.
+
+  Full-stack developer with a focus on Web3 and AI.
+  I build things that live at the intersection of
+  decentralized systems and intelligent software.
+
+  Currently looking for remote opportunities where I can
+  contribute to ambitious products. I care about clean code,
+  thoughtful architecture, and shipping things that matter.
+
+  This site is my digital garden - a place for projects,
+  ideas, and notes that grow over time.`,
+
+  skills: [
+    {
+      category: 'Frontend',
+      items: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Vue.js'],
+    },
+    {
+      category: 'Backend',
+      items: ['Node.js', 'Python', 'Rust', 'PostgreSQL', 'Redis'],
+    },
+    {
+      category: 'Web3',
+      items: ['Solidity', 'Ethers.js', 'Hardhat', 'TheGraph', 'IPFS'],
+    },
+    {
+      category: 'AI/ML',
+      items: ['OpenAI API', 'LangChain', 'RAG', 'Vector DBs', 'Prompt Engineering'],
+    },
+    {
+      category: 'DevOps',
+      items: ['Docker', 'AWS', 'Vercel', 'GitHub Actions', 'Linux'],
+    },
+  ],
+
+  projects,
+  garden,
+
+  contact: {
+    email: 'lewis@lewisliu.dev',
+    github: 'lewisliu',
+    twitter: 'lewisliu_dev',
+    linkedin: 'lewisliu',
+  },
+
+  resume: `  Lewis Liu
+  Full Stack Developer / Web3 / AI
+
+  Experience:
+  - Full Stack Developer (2022 - Present)
+    Building AI-powered applications and Web3 tools
+  - Frontend Engineer (2020 - 2022)
+    React/Next.js applications at scale
+
+  Education:
+  - Computer Science
+
+  Open to remote opportunities worldwide.`,
+}
+
+// URL params handled client-side in Terminal component
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lewis Liu - Full Stack / Web3 / AI</title>
+    <meta
+      name="description"
+      content="Lewis Liu's digital garden - portfolio, blog, and notes. Full stack developer focused on Web3 and AI."
+    />
+    <meta property="og:title" content="Lewis Liu - Full Stack / Web3 / AI" />
+    <meta
+      property="og:description"
+      content="Lewis Liu's digital garden - portfolio, blog, and notes."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Lewis Liu - Full Stack / Web3 / AI" />
+    <meta
+      name="twitter:description"
+      content="Lewis Liu's digital garden - portfolio, blog, and notes."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <Terminal client:load data={siteData} />
+    <noscript>
+      <div class="noscript-content">
+        <h1>Lewis Liu</h1>
+        <p>Full Stack Developer / Web3 / AI</p>
+        <h2>About</h2>
+        <p>
+          Full-stack developer with a focus on Web3 and AI. Building things at
+          the intersection of decentralized systems and intelligent software.
+        </p>
+        <h2>Projects</h2>
+        <ul>
+          {projects.map((p) => (
+            <li>
+              <strong>{p.title}</strong> - {p.description}
+            </li>
+          ))}
+        </ul>
+        <h2>Blog</h2>
+        <ul>
+          {garden.map((g) => (
+            <li>
+              {g.date} - {g.title}
+            </li>
+          ))}
+        </ul>
+        <h2>Contact</h2>
+        <p>Email: lewis@lewisliu.dev</p>
+        <p>GitHub: github.com/lewisliu</p>
+      </div>
+    </noscript>
+  </body>
+</html>
