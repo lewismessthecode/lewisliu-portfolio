@@ -46,7 +46,6 @@ export interface SiteData {
     readonly email: string
     readonly github: string
     readonly twitter: string
-    readonly linkedin: string
   }
   readonly resume: string
 }
@@ -303,11 +302,7 @@ export function createCommands(
           true
         ),
         output(
-          `    Twitter:  <a href="${safeUrl(`https://twitter.com/${c.twitter}`)}" target="_blank" rel="noopener">@${escapeHtml(c.twitter)}</a>`,
-          true
-        ),
-        output(
-          `    LinkedIn: <a href="${safeUrl(`https://linkedin.com/in/${c.linkedin}`)}" target="_blank" rel="noopener">linkedin.com/in/${escapeHtml(c.linkedin)}</a>`,
+          `    Twitter:  <a href="${safeUrl(`https://x.com/${c.twitter}`)}" target="_blank" rel="noopener">@${escapeHtml(c.twitter)}</a>`,
           true
         ),
         output(''),

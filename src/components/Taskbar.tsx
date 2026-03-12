@@ -46,7 +46,7 @@ export default function Taskbar() {
         <div className="win98-quick-launch">
           <a
             className="win98-quick-launch-btn"
-            href="https://github.com/lewisliu"
+            href="https://github.com/lewismessthecode"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
@@ -56,17 +56,7 @@ export default function Taskbar() {
           </a>
           <a
             className="win98-quick-launch-btn"
-            href="https://linkedin.com/in/lewisliu"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            title="LinkedIn"
-          >
-            &#128101;
-          </a>
-          <a
-            className="win98-quick-launch-btn"
-            href="https://twitter.com/lewisliu_dev"
+            href="https://x.com/leeeewisliu"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Twitter"
