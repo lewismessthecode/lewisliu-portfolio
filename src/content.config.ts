@@ -10,7 +10,7 @@ const projects = defineCollection({
     github: z.string().optional(),
     demo: z.string().optional(),
     order: z.number().default(99),
-    date: z.coerce.date(),
+    date: z.coerce.date().optional(),
   }),
 })
 

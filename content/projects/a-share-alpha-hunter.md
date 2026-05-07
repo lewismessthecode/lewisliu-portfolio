@@ -3,8 +3,7 @@ title: "A-Share Sector Alpha Hunter"
 description: "A-share market hotspots and potential catch-up stocks in real-time"
 tags: ["Finance", "Python", "Data Analysis", "Real-time"]
 github: "https://github.com/lewismessthecode/A-Share-Sector-Alpha-Hunter"
-order: 5
-date: 2024-02-01
+order: 4
 ---
 
 Real-time A-share market analysis for identifying sector hotspots and laggard stocks:
