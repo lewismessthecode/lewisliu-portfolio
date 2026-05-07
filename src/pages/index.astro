@@ -44,37 +44,73 @@ const garden = [
 const siteData: SiteData = {
   about: `  Hi, I'm Lewis Liu.
 
-  Full-stack developer with a focus on Web3 and AI.
-  I build things that live at the intersection of
-  decentralized systems and intelligent software.
+  I'm an engineer who builds across domains — AI agent,
+  bioinformatics infrastructure, and developer
+  experience. I like systems that compose, contracts that hold, and
+  software that earns its weight.
 
-  Currently looking for remote opportunities where I can
-  contribute to ambitious products. I care about clean code,
-  thoughtful architecture, and shipping things that matter.
+  Day job: software engineer at BGI Genomics (深圳华大基因) —
+  workflow standardization across 10+ NGS pipelines, LLM-driven
+  clinical interpretation, and prompt evaluation systems.
 
-  This site is my digital garden - a place for projects,
-  ideas, and notes that grow over time.`,
+  After hours I ship open source: Bioinfoflow (agentic workflow
+  platform), A-Share Sector Alpha Hunter, a Notion clone called Jotion, etc.
+
+  2023 阿里云天池 · 生命科学赛道 冠军 + 创新奖.
+  Co-author on Hum Genomics 18:114 (2024).`,
 
   skills: [
     {
+      category: 'AI / LLM / Agents',
+      items: [
+        'LangChain',
+        'Agent runtime',
+        'Agent Harness',
+        'Prompt engineering',
+        'Eval',
+        'RAG',
+      ],
+    },
+    {
+      category: 'Bioinformatics',
+      items: [
+        'Nextflow',
+        'WDL / miniwdl',
+        'Snakemake',
+        'GATK4',
+        'DeepVariant',
+        'BWA',
+        'NVIDIA Parabricks',
+        'ACMG variant interpretation',
+        'NGS pipeline standardization',
+      ],
+    },
+    {
+      category: 'Backend & Systems',
+      items: [
+        'Python',
+        'FastAPI',
+        'Docker',
+        'Linux',
+      ],
+    },
+    {
       category: 'Frontend',
-      items: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Vue.js'],
+      items: [
+        'Next.js',
+        'React',
+        'TypeScript',
+        'TailwindCSS',
+        'shadcn-ui',
+      ],
     },
     {
-      category: 'Backend',
-      items: ['Node.js', 'Python', 'Rust', 'PostgreSQL', 'Redis'],
-    },
-    {
-      category: 'Web3',
-      items: ['Solidity', 'Ethers.js', 'Hardhat', 'TheGraph', 'IPFS'],
-    },
-    {
-      category: 'AI/ML',
-      items: ['OpenAI API', 'LangChain', 'RAG', 'Vector DBs', 'Prompt Engineering'],
-    },
-    {
-      category: 'DevOps',
-      items: ['Docker', 'AWS', 'Vercel', 'GitHub Actions', 'Linux'],
+      category: 'Data',
+      items: [
+        'Streamlit',
+        'Pandas',
+        'AutoGluon',
+      ],
     },
   ],
 
@@ -88,18 +124,38 @@ const siteData: SiteData = {
   },
 
   resume: `  Lewis Liu
-  Full Stack Developer / Web3 / AI
+  Software Engineer · AI Agent Systems · Bioinformatics Infra · Builder
 
-  Experience:
-  - Full Stack Developer (2022 - Present)
-    Building AI-powered applications and Web3 tools
-  - Frontend Engineer (2020 - 2022)
-    React/Next.js applications at scale
+  EXPERIENCE
+  ──────────
+  BGI Genomics (深圳华大基因) — 2022.07 to present
+    Software Engineer / Bioinformatics Engineer
 
-  Education:
-  - Computer Science
+    · Standardized NGS workflows across 10+ business lines
+      (Oncology, NIPT, WGS) — production stability +45%.
+    · Led ACMG-based LLM clinical interpretation pipeline; designed
+      end-to-end prompt eval system, +40% accuracy to expert level.
+    · Fine-tuned LLaMA-7B & BioGPT on 10k HPO entries — validated
+      medical-domain LLM adaptation, results near OSS SOTA at the time.
 
-  Open to remote opportunities worldwide.`,
+  SELECTED PROJECTS
+  ──────────────────
+  Bioinfoflow (2025–) — Local-first agentic bioinformatics workflow platform.
+
+  RECOGNITION
+  ────────────
+  · 2023 Aliyun Tianchi Bio AI Challenge
+    生命科学赛道 — 冠军 (1st) + 创新奖 (Innovation Award)
+  · Wang T, ..., Liu Z et al. — Hum Genomics 18:114 (2024)
+    Fast and accurate DNA-Seq variant calling workflow composed of
+    LUSH toolkit. DOI: 10.1186/s40246-024-00666-w
+
+  EDUCATION
+  ──────────
+  South China Agricultural University
+  Molecular Biology · BSc + MSc · 2015 – 2022
+
+  Open to remote opportunities and interesting problems.`,
 }
 
 // URL params handled client-side in Terminal component
@@ -110,22 +166,22 @@ const siteData: SiteData = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lewis Liu - Full Stack / Web3 / AI</title>
+    <title>Lewis Liu — Engineer · Builder · AI Agents · Bioinfo · Quant</title>
     <meta
       name="description"
-      content="Lewis Liu's digital garden - portfolio, blog, and notes. Full stack developer focused on Web3 and AI."
+      content="Lewis Liu — engineer building across AI agent, bioinformatics infrastructure, and developer experience. Open source, BGI Genomics, Tianchi 1st place."
     />
-    <meta property="og:title" content="Lewis Liu - Full Stack / Web3 / AI" />
+    <meta property="og:title" content="Lewis Liu — Engineer · Builder · AI Agents · Bioinfo · Data scientist" />
     <meta
       property="og:description"
-      content="Lewis Liu's digital garden - portfolio, blog, and notes."
+      content="Engineer who works across AI agents, bioinformatics, and dev tools. Open source builder."
     />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Lewis Liu - Full Stack / Web3 / AI" />
+    <meta name="twitter:title" content="Lewis Liu — Engineer · Builder" />
     <meta
       name="twitter:description"
-      content="Lewis Liu's digital garden - portfolio, blog, and notes."
+      content="Engineer building across AI agents, bioinformatics, and dev experience."
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
@@ -134,11 +190,12 @@ const siteData: SiteData = {
     <noscript>
       <div class="noscript-content">
         <h1>Lewis Liu</h1>
-        <p>Full Stack Developer / Web3 / AI</p>
+        <p>Engineer · Builder · AI Agents · Bioinformatics · Data scientist</p>
         <h2>About</h2>
         <p>
-          Full-stack developer with a focus on Web3 and AI. Building things at
-          the intersection of decentralized systems and intelligent software.
+          Engineer who builds across AI agent, bioinformatics
+          infrastructure, and developer experience.
+          Software engineer at BGI Genomics. Open source builder.
         </p>
         <h2>Projects</h2>
         <ul>
@@ -157,7 +214,7 @@ const siteData: SiteData = {
           ))}
         </ul>
         <h2>Contact</h2>
-        <p>Email: lewis.gen.liu@gmail.com</p>
+        <p>Email: lewis.o.liu@gmail.com</p>
         <p>GitHub: github.com/lewismessthecode</p>
       </div>
     </noscript>
