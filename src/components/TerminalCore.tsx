@@ -8,8 +8,7 @@ import { useDesktop } from '../lib/desktop-context'
 import StatusBar from './StatusBar'
 import MatrixRain from './MatrixRain'
 
-const BANNER = `Initializing LewisShell v1.0...
-Copyright (c) 2024 Lewis Liu <lewis@lewisliu.dev>
+const BANNER = `LewisShell v2.0 \u00b7 boot ok
 
  \u2588\u2588\u2557     \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2557    \u2588\u2588\u2557\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557
  \u2588\u2588\u2551     \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d\u2588\u2588\u2551    \u2588\u2588\u2551\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d
@@ -18,13 +17,16 @@ Copyright (c) 2024 Lewis Liu <lewis@lewisliu.dev>
  \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u255a\u2588\u2588\u2588\u2554\u2588\u2588\u2588\u2554\u255d\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551
  \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d \u255a\u2550\u2550\u255d\u255a\u2550\u2550\u255d \u255a\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d
 
-..................................................
-  Type 'help' for a list of available commands.
+  engineer  \u00b7  builder  \u00b7  open source
+  ai-agents  \u00b7  bioinformatics  \u00b7  quant  \u00b7  dev-experience
+
+  \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+  type 'help' for commands  \u00b7  'now' for what i'm shipping
 `
 
 const BANNER_MOBILE = `LEWIS LIU
-Full Stack / Web3 / AI
-Type 'help' for commands.
+engineer \u00b7 ai-agents \u00b7 bio \u00b7 quant \u00b7 dev-ux
+type 'help' or 'now' to begin.
 `
 
 function getInitialCmd(): string | null {

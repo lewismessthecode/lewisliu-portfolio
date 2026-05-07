@@ -55,13 +55,21 @@ export default function StartMenu({ onClose }: StartMenuProps) {
           <span className="win98-start-item-icon" aria-hidden="true">&#128100;</span>
           About
         </button>
-        <button className="win98-start-item" role="menuitem" onClick={() => runCommand('skills')}>
+        <button className="win98-start-item" role="menuitem" onClick={() => runCommand('now')}>
           <span className="win98-start-item-icon" aria-hidden="true">&#9881;</span>
-          Skills
+          Now
         </button>
         <button className="win98-start-item" role="menuitem" onClick={() => runCommand('projects')}>
           <span className="win98-start-item-icon" aria-hidden="true">&#128193;</span>
           Projects
+        </button>
+        <button className="win98-start-item" role="menuitem" onClick={() => runCommand('wins')}>
+          <span className="win98-start-item-icon" aria-hidden="true">&#127942;</span>
+          Wins
+        </button>
+        <button className="win98-start-item" role="menuitem" onClick={() => runCommand('skills')}>
+          <span className="win98-start-item-icon" aria-hidden="true">&#10070;</span>
+          Skills
         </button>
         <button className="win98-start-item" role="menuitem" onClick={() => runCommand('garden')}>
           <span className="win98-start-item-icon" aria-hidden="true">&#127793;</span>

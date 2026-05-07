@@ -68,7 +68,7 @@ export default function Desktop({ data }: DesktopProps) {
     engineRef,
   }
 
-  const shortcutCommands = ['help', 'about', 'skills', 'projects', 'garden', 'contact', 'resume', 'theme']
+  const shortcutCommands = ['help', 'about', 'now', 'projects', 'wins', 'skills', 'garden', 'contact', 'resume', 'theme']
 
   // Mobile: fullscreen terminal with shortcuts (same as original)
   if (mobile) {
