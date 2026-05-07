@@ -116,6 +116,36 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Subtle CRT scanline overlay — applied above content but ignores pointer events */
+.terminal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0,
+    transparent 2px,
+    rgba(0, 0, 0, 0.07) 2px,
+    rgba(0, 0, 0, 0.07) 3px
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Soft inner vignette for depth */
+.terminal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+  pointer-events: none;
+  z-index: 4;
+}
+
 /* Terminal overlay (keeps .terminal-scanlines div inert) */
 .terminal-scanlines {
   display: none;
@@ -148,6 +178,9 @@ body {
   white-space: pre-wrap;
   word-break: break-word;
   color: var(--text);
+  text-shadow:
+    0 0 4px var(--accent),
+    0 0 12px color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
 /* Terminal lines */
@@ -427,6 +460,89 @@ body {
   .terminal-boot {
     color: #333;
   }
+}
+
+/* ─── Color-coded inline tag chips ─── */
+.terminal-line .tag {
+  display: inline-block;
+  padding: 0 7px;
+  margin: 1px 3px 1px 0;
+  border-radius: 3px;
+  font-size: 0.85em;
+  letter-spacing: 0.3px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-dim);
+  vertical-align: 1px;
+  text-shadow: none;
+}
+.terminal-line .tag--ai {
+  color: #c4a7ff;
+  border-color: rgba(196, 167, 255, 0.35);
+  background: rgba(196, 167, 255, 0.08);
+}
+.terminal-line .tag--bio {
+  color: #7eee9f;
+  border-color: rgba(126, 238, 159, 0.35);
+  background: rgba(126, 238, 159, 0.08);
+}
+.terminal-line .tag--frontend {
+  color: #8be9fd;
+  border-color: rgba(139, 233, 253, 0.35);
+  background: rgba(139, 233, 253, 0.08);
+}
+.terminal-line .tag--backend {
+  color: #ffb86c;
+  border-color: rgba(255, 184, 108, 0.35);
+  background: rgba(255, 184, 108, 0.08);
+}
+.terminal-line .tag--data {
+  color: #f1fa8c;
+  border-color: rgba(241, 250, 140, 0.35);
+  background: rgba(241, 250, 140, 0.08);
+}
+.terminal-line .tag--misc {
+  color: #ff79c6;
+  border-color: rgba(255, 121, 198, 0.35);
+  background: rgba(255, 121, 198, 0.08);
+}
+
+/* ─── Project list styles ─── */
+.terminal-line .proj-num {
+  color: var(--text-dim);
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-right: 4px;
+  opacity: 0.7;
+}
+.terminal-line .proj-title {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* ─── Now / Wins accent styles ─── */
+.terminal-line .now-tag {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-shadow: 0 0 6px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.terminal-line .win-year {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-shadow: 0 0 6px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.terminal-line .win-metric {
+  color: #ffd166;
+  font-weight: 700;
+  background: rgba(255, 209, 102, 0.12);
+  border: 1px solid rgba(255, 209, 102, 0.28);
+  padding: 0 6px;
+  border-radius: 3px;
+  text-shadow: none;
 }
 
 /* Noscript fallback */

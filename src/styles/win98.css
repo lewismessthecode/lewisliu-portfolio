@@ -28,14 +28,36 @@
   background: var(--win98-gray);
   border: 2px solid;
   border-color: var(--win98-white) var(--win98-dark-gray) var(--win98-dark-gray) var(--win98-white);
-  box-shadow: 1px 1px 0 var(--win98-black);
+  box-shadow:
+    1px 1px 0 var(--win98-black),
+    0 14px 48px rgba(0, 0, 0, 0.45),
+    0 4px 18px rgba(0, 0, 0, 0.32),
+    0 0 0 1px rgba(0, 0, 0, 0.5);
   border-radius: 0;
   overflow: hidden;
 }
 
+/* Soft window appearance — only opacity/filter so the drag transform is unaffected */
+@keyframes terminal-window-appear {
+  from {
+    opacity: 0;
+    filter: blur(8px) brightness(1.35) saturate(1.2);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0) brightness(1) saturate(1);
+  }
+}
+
+.terminal-wrapper {
+  animation: terminal-window-appear 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
 .win98-titlebar {
   height: 28px;
-  background: linear-gradient(90deg, var(--win98-title-blue-active) 0%, #1084d0 100%);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, transparent 60%),
+    linear-gradient(90deg, var(--win98-title-blue-active) 0%, #1084d0 100%);
   display: flex;
   align-items: center;
   padding: 0 3px;
@@ -43,6 +65,7 @@
   user-select: none;
   cursor: grab;
   flex-shrink: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 }
 
 .win98-titlebar:active {
@@ -176,10 +199,16 @@
   outline: 1px dotted #fff;
 }
 
+.win98-icon:hover {
+  background: rgba(0, 0, 128, 0.22);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
 .win98-icon--selected {
   background: rgba(0, 0, 128, 0.4);
   border-color: rgba(255, 255, 255, 0.3);
 }
+
 
 .win98-icon-graphic {
   width: 32px;
@@ -188,6 +217,13 @@
   align-items: center;
   justify-content: center;
   image-rendering: pixelated;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+  transition: transform 0.15s ease;
+}
+
+.win98-icon:hover .win98-icon-graphic,
+.win98-icon:focus-visible .win98-icon-graphic {
+  transform: translateY(-1px);
 }
 
 .win98-icon-label {
@@ -594,6 +630,17 @@
 
 .terminal-statusbar-sep {
   opacity: 0.4;
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .terminal-wrapper {
+    animation: none;
+  }
+
+  .win98-icon-graphic {
+    transition: none;
+  }
 }
 
 /* ─── Hide on mobile ─── */
