@@ -503,7 +503,7 @@ export function createCommands(
     description: "Who am I?",
     execute: () => [
       output("  Lewis Liu — engineer who builds across"),
-      output("  AI agents, bioinformatics, quant tools, and dev experience."),
+      output("  AI agents, bioinformatics, dev experience."),
     ],
   });
 
