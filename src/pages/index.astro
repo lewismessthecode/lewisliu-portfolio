@@ -1,222 +1,89 @@
 ---
-import { getCollection } from 'astro:content'
-import Desktop from '../components/Desktop'
-import type { SiteData } from '../lib/commands'
-import '../styles/terminal.css'
-import '../styles/win98.css'
-import '../styles/backgrounds.css'
-import '../styles/matrix-rain.css'
+import { getSiteData, profile } from '../lib/site-data'
+import '../styles/portfolio.css'
 
-const projectEntries = await getCollection('projects')
-const postEntries = await getCollection('posts')
-const noteEntries = await getCollection('notes')
-
-const projects = projectEntries
-  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
-  .map((p) => ({
-    title: p.data.title,
-    description: p.data.description,
-    tags: p.data.tags,
-    github: p.data.github,
-    demo: p.data.demo,
-    body: p.body ?? '',
-  }))
-
-const garden = [
-  ...postEntries.map((p) => ({
-    slug: p.id.replace(/\.md$/, ''),
-    title: p.data.title,
-    date: p.data.date.toISOString().slice(0, 10),
-    tags: p.data.tags,
-    type: 'post' as const,
-    body: p.body ?? '',
-  })),
-  ...noteEntries.map((n) => ({
-    slug: n.id.replace(/\.md$/, ''),
-    title: n.data.title,
-    date: n.data.date.toISOString().slice(0, 10),
-    tags: n.data.tags,
-    type: 'note' as const,
-    body: n.body ?? '',
-  })),
-].sort((a, b) => b.date.localeCompare(a.date))
-
-const siteData: SiteData = {
-  about: `  Hi, I'm Lewis Liu.
-
-  I'm an engineer who builds across domains — AI agent,
-  bioinformatics infrastructure, and developer
-  experience. I like systems that compose, contracts that hold, and
-  software that earns its weight.
-
-  Day job: software engineer at BGI Genomics (深圳华大基因) —
-  workflow standardization across 10+ NGS pipelines, LLM-driven
-  clinical interpretation, and prompt evaluation systems.
-
-  After hours I ship open source: Bioinfoflow (agentic workflow
-  platform), A-Share Sector Alpha Hunter, a Notion clone called Jotion, etc.
-
-  2023 阿里云天池 · 生命科学赛道 冠军 + 创新奖.
-  Co-author on Hum Genomics 18:114 (2024).`,
-
-  skills: [
-    {
-      category: 'AI / LLM / Agents',
-      items: [
-        'LangChain',
-        'Agent runtime',
-        'Agent Harness',
-        'Prompt engineering',
-        'Eval',
-        'RAG',
-      ],
-    },
-    {
-      category: 'Bioinformatics',
-      items: [
-        'Nextflow',
-        'WDL / miniwdl',
-        'Snakemake',
-        'GATK4',
-        'DeepVariant',
-        'BWA',
-        'NVIDIA Parabricks',
-        'ACMG variant interpretation',
-        'NGS pipeline standardization',
-      ],
-    },
-    {
-      category: 'Backend & Systems',
-      items: [
-        'Python',
-        'FastAPI',
-        'Docker',
-        'Linux',
-      ],
-    },
-    {
-      category: 'Frontend',
-      items: [
-        'Next.js',
-        'React',
-        'TypeScript',
-        'TailwindCSS',
-        'shadcn-ui',
-      ],
-    },
-    {
-      category: 'Data',
-      items: [
-        'Streamlit',
-        'Pandas',
-        'AutoGluon',
-      ],
-    },
-  ],
-
-  projects,
-  garden,
-
-  contact: {
-    email: 'lewis.gen.liu@gmail.com',
-    github: 'lewismessthecode',
-    twitter: 'leeeewisliu',
-  },
-
-  resume: `  Lewis Liu
-  Software Engineer · AI Agent Systems · Bioinformatics Infra · Builder
-
-  EXPERIENCE
-  ──────────
-  BGI Genomics (深圳华大基因) — 2022.07 to present
-    Software Engineer / Bioinformatics Engineer
-
-    · Standardized NGS workflows across 10+ business lines
-      (Oncology, NIPT, WGS) — production stability +45%.
-    · Led ACMG-based LLM clinical interpretation pipeline; designed
-      end-to-end prompt eval system, +40% accuracy to expert level.
-    · Fine-tuned LLaMA-7B & BioGPT on 10k HPO entries — validated
-      medical-domain LLM adaptation, results near OSS SOTA at the time.
-
-  SELECTED PROJECTS
-  ──────────────────
-  Bioinfoflow (2025–) — Local-first agentic bioinformatics workflow platform.
-
-  RECOGNITION
-  ────────────
-  · 2023 Aliyun Tianchi Bio AI Challenge
-    生命科学赛道 — 冠军 (1st) + 创新奖 (Innovation Award)
-  · Wang T, ..., Liu Z et al. — Hum Genomics 18:114 (2024)
-    Fast and accurate DNA-Seq variant calling workflow composed of
-    LUSH toolkit. DOI: 10.1186/s40246-024-00666-w
-
-  EDUCATION
-  ──────────
-  South China Agricultural University
-  Molecular Biology · BSc + MSc · 2015 – 2022
-
-  Open to remote opportunities and interesting problems.`,
-}
-
-// URL params handled client-side in Terminal component
+const data = await getSiteData()
+const featured = data.projects
+  .filter((project) => project.featuredOrder !== undefined)
+  .sort((a, b) => (a.featuredOrder ?? 99) - (b.featuredOrder ?? 99))
 ---
-
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lewis Liu — Engineer · Builder · AI Agents · Bioinfo</title>
-    <meta
-      name="description"
-      content="Lewis Liu — engineer building across AI agent, bioinformatics infrastructure, and developer experience. Open source, BGI Genomics, Tianchi 1st place."
-    />
-    <meta property="og:title" content="Lewis Liu — Engineer · Builder · AI Agents · Bioinfo · Data scientist" />
-    <meta
-      property="og:description"
-      content="Engineer who works across AI agents, bioinformatics, and dev tools. Open source builder."
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lewis Liu · Software engineer</title>
+    <meta name="description" content={profile.description} />
+    <meta property="og:title" content="Lewis Liu · Software engineer" />
+    <meta property="og:description" content={profile.description} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Lewis Liu — Engineer · Builder" />
-    <meta
-      name="twitter:description"
-      content="Engineer building across AI agents, bioinformatics, and dev experience."
-    />
+    <link rel="canonical" href="https://lewisliu.space/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline>
+      if (new URLSearchParams(window.location.search).has('cmd')) {
+        window.location.replace('/terminal' + window.location.search + window.location.hash)
+      }
+    </script>
   </head>
   <body>
-    <Desktop client:load data={siteData} />
-    <noscript>
-      <div class="noscript-content">
-        <h1>Lewis Liu</h1>
-        <p>Engineer · Builder · AI Agents · Bioinformatics · Data scientist</p>
-        <h2>About</h2>
-        <p>
-          Engineer who builds across AI agent, bioinformatics
-          infrastructure, and developer experience.
-          Software engineer at BGI Genomics. Open source builder.
-        </p>
-        <h2>Projects</h2>
-        <ul>
-          {projects.map((p) => (
-            <li>
-              <strong>{p.title}</strong> - {p.description}
-            </li>
-          ))}
-        </ul>
-        <h2>Blog</h2>
-        <ul>
-          {garden.map((g) => (
-            <li>
-              {g.date} - {g.title}
-            </li>
-          ))}
-        </ul>
-        <h2>Contact</h2>
-        <p>Email: lewis.o.liu@gmail.com</p>
-        <p>GitHub: github.com/lewismessthecode</p>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="desktop">
+      <aside class="desktop-rail" aria-label="Desktop shortcuts">
+        <a href="#work"><span class="desktop-icon folder-icon" aria-hidden="true"></span><span>Work</span></a>
+        <a href="/terminal"><span class="desktop-icon prompt-icon" aria-hidden="true">&gt;_</span><span>Terminal</span></a>
+      </aside>
+      <div class="window">
+        <div class="titlebar"><span class="titlebar-mark" aria-hidden="true">▣</span><span>Lewis Liu</span><span class="titlebar-path">C:\LEWIS\PORTFOLIO</span></div>
+        <header class="menu-bar">
+          <a class="wordmark" href="#top">Lewis Liu<span class="wordmark-dot">.</span></a>
+          <nav aria-label="Main navigation">
+            <a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a><a class="terminal-link" href="/terminal"><span aria-hidden="true">&gt;_</span> Terminal</a>
+          </nav>
+        </header>
+        <main id="main">
+          <section class="intro" id="top">
+            <div class="intro-copy">
+              <p class="eyebrow"><span class="pixel-square" aria-hidden="true"></span>{profile.role}</p>
+              <h1>Lewis Liu</h1>
+              <p class="intro-description">{profile.description}</p>
+            </div>
+          </section>
+          <section class="work-section" id="work" aria-labelledby="work-heading">
+            <div class="section-heading"><h2 id="work-heading">Selected work</h2></div>
+            <div class="project-list">
+              {featured.map((project, index) => (
+                <article class="project">
+                  <div class="project-image">
+                    <div class="image-titlebar"><span class="image-title">{project.title}</span><span aria-hidden="true">▰</span></div>
+                    <a href={project.github} aria-label={`View ${project.title} on GitHub`}>
+                      <img src={project.image} alt={`${project.title} application screenshot`} loading={index === 0 ? 'eager' : 'lazy'} decoding="async" />
+                    </a>
+                  </div>
+                  <div class="project-info">
+                    <h3>{project.title}</h3>
+                    <p>{project.description}</p>
+                    <div class="project-links">
+                      {project.github && <a href={project.github}>GitHub <span aria-hidden="true">↗</span></a>}
+                      {project.demo && <a href={project.demo}>Website <span aria-hidden="true">↗</span></a>}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+          <section class="about-section" id="about" aria-labelledby="about-heading">
+            <div class="section-heading"><h2 id="about-heading">About</h2></div>
+            <div class="about-body"><p>{profile.bio}</p><a href="/terminal?cmd=resume">More in the terminal <span aria-hidden="true">↗</span></a></div>
+          </section>
+          <section class="contact-section" id="contact" aria-labelledby="contact-heading">
+            <div class="section-heading"><h2 id="contact-heading">Contact</h2></div>
+            <div class="contact-links"><a href={`mailto:${profile.email}`}>{profile.email} <span aria-hidden="true">↗</span></a><a href={`https://github.com/${profile.github}`}>GitHub <span aria-hidden="true">↗</span></a><a href={`https://x.com/${profile.twitter}`}>X <span aria-hidden="true">↗</span></a></div>
+          </section>
+        </main>
+        <footer class="window-footer"><span>Lewis Liu</span><a href="/terminal?cmd=garden">Notes &amp; writing ↗</a></footer>
       </div>
-    </noscript>
+      <footer class="taskbar"><a href="#top" class="taskbar-home"><span aria-hidden="true">▦</span> Lewis Liu</a><span class="taskbar-divider"></span><span class="taskbar-window">▣ &nbsp; Portfolio</span><a href="/terminal" class="taskbar-terminal">&gt;_ &nbsp; Terminal</a></footer>
+    </div>
   </body>
 </html>

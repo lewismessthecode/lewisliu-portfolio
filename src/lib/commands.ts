@@ -61,6 +61,8 @@ export interface SiteData {
     readonly github?: string;
     readonly demo?: string;
     readonly body: string;
+    readonly featuredOrder?: number;
+    readonly image?: string;
   }>;
   readonly garden: ReadonlyArray<{
     readonly slug: string;
@@ -115,8 +117,6 @@ export function createCommands(
     execute: () => [
       output(""),
       output(data.about),
-      output(""),
-      output('  Open to remote opportunities — reach out via "contact".'),
       output(""),
       output("  See also: now, projects, wins, skills, resume"),
       output(""),
@@ -381,11 +381,6 @@ export function createCommands(
       output(""),
       output(data.resume),
       output(""),
-      output(
-        '  <a href="/resume.pdf" target="_blank" rel="noopener">[Download PDF]</a>',
-        true,
-      ),
-      output(""),
       output("  See also: skills, projects, contact"),
       output(""),
     ],
@@ -512,24 +507,14 @@ export function createCommands(
     description: "What I am working on right now",
     execute: () => [
       output(""),
-      output("  * Currently:"),
+      output("  * Selected projects:"),
       output(""),
-      output(
-        '    [Day]   <span class="now-tag">BGI Genomics</span> — workflow standardization,',
-        true,
-      ),
-      output("            LLM-driven software development."),
+      ...data.projects
+        .filter((project) => project.featuredOrder !== undefined)
+        .sort((a, b) => (a.featuredOrder ?? 99) - (b.featuredOrder ?? 99))
+        .map((project) => output(`    ${project.title} — ${project.description}`)),
       output(""),
-      output(
-        '    [Open]  <span class="now-tag">Bioinfoflow</span> — agentic bioinformatics workflow',
-        true,
-      ),
-      output("            orchestration platform."),
-      output(""),
-      output("    [Read]  ..."),
-      output("            "),
-      output(""),
-      output("  See also: projects, wins, contact"),
+      output("  See also: projects, contact"),
       output(""),
     ],
   });
@@ -559,22 +544,6 @@ export function createCommands(
       output("          composed of LUSH toolkit."),
       output(
         '          <a href="https://doi.org/10.1186/s40246-024-00666-w" target="_blank" rel="noopener">DOI: 10.1186/s40246-024-00666-w</a>',
-        true,
-      ),
-      output(""),
-      output(
-        '    2024  <span class="win-year">Bioinfoflow</span> launched — local-first agentic',
-        true,
-      ),
-      output("          workflow platform; nf-core/rnaseq + NVIDIA Parabricks"),
-      output("          WGS pipelines validated on local hardware."),
-      output(""),
-      output(
-        '    2022→ Production stability <span class="win-metric">+45%</span> across 10+ NGS',
-        true,
-      ),
-      output(
-        '          pipelines at BGI Genomics; ACMG prompt accuracy <span class="win-metric">+40%</span>.',
         true,
       ),
       output(""),

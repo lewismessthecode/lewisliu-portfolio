@@ -1,12 +1,12 @@
 ---
 title: "Bioinfoflow"
-description: "Local-first agentic bioinformatics workflow orchestration platform fusing Nextflow/WDL execution with LLM agents."
-tags: ["AI Agent", "Bioinformatics", "Python", "FastAPI", "Workflow"]
+description: "A local agent workspace for bioinformatics workflows."
+tags: ["AI agents", "Bioinformatics", "Workflows"]
 github: "https://github.com/lewismessthecode/BioinfoFlow"
+demo: "https://bioinfoflow.com/"
 order: 1
+featuredOrder: 3
+image: "/projects/bioinfoflow.webp"
 ---
 
-A local-first agentic workflow orchestration platform that unifies workflow engines, agent runtimes, and scheduling under one product
-
-Stack: Python 3.12, FastAPI, async SQLAlchemy, Nextflow, WDL/miniwdl,
-Docker Swarm, Next.js 16, React 19, Typer + Rich CLI, LangChain, SSE.
+Describe an analysis and work with an agent to prepare inputs, run Nextflow or WDL workflows, follow logs, and review results on infrastructure you control.
