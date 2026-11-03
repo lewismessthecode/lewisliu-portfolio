@@ -1,14 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
-/* Theme variables - defaults to hacker */
 :root {
-  --bg: #0a0a0a;
-  --text: #00ff41;
-  --text-dim: #4d9e5e;
-  --accent: #00ff41;
-  --border: #00ff4133;
-  --glow: 0 0 10px #00ff4140;
-  --titlebar-bg: #050505;
+  --bg: #080808;
+  --text: #d4d4d4;
+  --text-dim: #a0a0a0;
+  --accent: #f0f0f0;
+  --border: #555555;
+  --glow: none;
+  --titlebar-bg: #080808;
 }
 
 *,
@@ -116,41 +115,6 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Subtle CRT scanline overlay — applied above content but ignores pointer events */
-.terminal::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    180deg,
-    transparent 0,
-    transparent 2px,
-    rgba(0, 0, 0, 0.07) 2px,
-    rgba(0, 0, 0, 0.07) 3px
-  );
-  pointer-events: none;
-  z-index: 5;
-}
-
-/* Soft inner vignette for depth */
-.terminal::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 50%,
-    rgba(0, 0, 0, 0.35) 100%
-  );
-  pointer-events: none;
-  z-index: 4;
-}
-
-/* Terminal overlay (keeps .terminal-scanlines div inert) */
-.terminal-scanlines {
-  display: none;
-}
-
 /* Output area — scrollable, contains lines + input */
 .terminal-output {
   flex: 1;
@@ -178,9 +142,6 @@ body {
   white-space: pre-wrap;
   word-break: break-word;
   color: var(--text);
-  text-shadow:
-    0 0 4px var(--accent),
-    0 0 12px color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
 /* Terminal lines */
@@ -204,7 +165,6 @@ body {
 
 .terminal-line--system {
   color: var(--accent);
-  font-style: italic;
 }
 
 /* Links in terminal output */
@@ -213,12 +173,10 @@ body {
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
-  text-shadow: 0 0 2px var(--text);
   transition: text-decoration-thickness 0.15s ease;
 }
 
 .terminal-line a:hover {
-  text-shadow: var(--glow);
   text-decoration-thickness: 2px;
 }
 
@@ -226,18 +184,20 @@ body {
 .terminal-input-row {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   padding: 8px 0 16px;
 }
 
 .terminal-prompt {
   color: var(--accent);
-  white-space: nowrap;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   flex-shrink: 0;
-  text-shadow: 0 0 2px var(--text);
 }
 
 .terminal-input {
-  min-width: 0;
+  flex: 1;
+  min-width: 8ch;
   width: auto;
   background: transparent;
   border: none;
@@ -246,72 +206,40 @@ body {
   font-size: 14px;
   line-height: 1.45;
   outline: none;
-  caret-color: transparent;
+  caret-color: var(--accent);
 }
 
-/* Blinking cursor — fade instead of step */
-.terminal-cursor {
-  display: inline-block;
-  width: 8px;
-  height: 1.2em;
-  background: var(--accent);
-  animation: blink 1s ease-in-out infinite;
-  vertical-align: text-bottom;
-  flex-shrink: 0;
-  text-shadow: 0 0 2px var(--text);
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.15; }
-}
-
-/* Mobile shortcuts */
-.terminal-mobile-shortcuts {
+.terminal-keys {
   display: none;
-  padding: 8px;
-  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
-  gap: 6px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
   flex-shrink: 0;
   border-top: 1px solid var(--border);
   background: var(--bg);
 }
 
-.terminal-mobile-shortcuts::-webkit-scrollbar {
-  display: none;
-}
-
-.terminal-shortcut-btn {
+.terminal-keys button {
+  flex: 1;
   background: transparent;
   color: var(--accent);
-  border: 1px solid var(--border);
-  padding: 10px 16px;
+  border: 0;
+  padding: 8px;
   min-height: 44px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  border-radius: 4px;
-  transition: transform 0.05s ease;
 }
 
-.terminal-shortcut-btn:active {
+.terminal-keys button:active {
   background: var(--accent);
   color: var(--bg);
-  transform: scale(0.95);
+}
+
+.terminal-keys button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -4px;
 }
 
 /* ─── Reduced Motion ─── */
 @media (prefers-reduced-motion: reduce) {
-  .terminal-cursor {
-    animation: none;
-    opacity: 1;
-  }
-
   .terminal-wrapper {
     transition: none;
   }
@@ -321,10 +249,6 @@ body {
   }
 
   .terminal {
-    transition: none;
-  }
-
-  .terminal-shortcut-btn {
     transition: none;
   }
 
@@ -339,10 +263,6 @@ body {
 
 /* ─── Forced Colors ─── */
 @media (forced-colors: active) {
-  .terminal-cursor {
-    display: none;
-  }
-
   .terminal-input {
     caret-color: auto;
   }
@@ -373,14 +293,19 @@ body {
 
   .terminal-output {
     padding: 12px;
+    font-size: 14px;
   }
 
   .terminal-input-row {
     padding: 8px 0 12px;
   }
 
-  .terminal-mobile-shortcuts {
+  .terminal-keys {
     display: flex;
+  }
+
+  .terminal-input {
+    font-size: 16px;
   }
 }
 
@@ -389,9 +314,6 @@ body {
     font-size: 12px;
   }
 
-  .terminal-boot {
-    font-size: 10px;
-  }
 }
 
 /* ─── Print Styles ─── */
@@ -421,13 +343,10 @@ body {
     overflow: visible;
   }
 
-  .terminal-cursor,
-  .terminal-mobile-shortcuts,
-  .terminal-scanlines,
+  .terminal-keys,
   .win98-taskbar,
   .win98-icons,
-  .win98-start-menu,
-  .terminal-statusbar {
+  .win98-start-menu {
     display: none !important;
   }
 
@@ -462,87 +381,9 @@ body {
   }
 }
 
-/* ─── Color-coded inline tag chips ─── */
-.terminal-line .tag {
-  display: inline-block;
-  padding: 0 7px;
-  margin: 1px 3px 1px 0;
-  border-radius: 3px;
-  font-size: 0.85em;
-  letter-spacing: 0.3px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--text-dim);
-  vertical-align: 1px;
-  text-shadow: none;
-}
-.terminal-line .tag--ai {
-  color: #c4a7ff;
-  border-color: rgba(196, 167, 255, 0.35);
-  background: rgba(196, 167, 255, 0.08);
-}
-.terminal-line .tag--bio {
-  color: #7eee9f;
-  border-color: rgba(126, 238, 159, 0.35);
-  background: rgba(126, 238, 159, 0.08);
-}
-.terminal-line .tag--frontend {
-  color: #8be9fd;
-  border-color: rgba(139, 233, 253, 0.35);
-  background: rgba(139, 233, 253, 0.08);
-}
-.terminal-line .tag--backend {
-  color: #ffb86c;
-  border-color: rgba(255, 184, 108, 0.35);
-  background: rgba(255, 184, 108, 0.08);
-}
-.terminal-line .tag--data {
-  color: #f1fa8c;
-  border-color: rgba(241, 250, 140, 0.35);
-  background: rgba(241, 250, 140, 0.08);
-}
-.terminal-line .tag--misc {
-  color: #ff79c6;
-  border-color: rgba(255, 121, 198, 0.35);
-  background: rgba(255, 121, 198, 0.08);
-}
-
-/* ─── Project list styles ─── */
-.terminal-line .proj-num {
-  color: var(--text-dim);
-  font-weight: 700;
-  letter-spacing: 1px;
-  margin-right: 4px;
-  opacity: 0.7;
-}
 .terminal-line .proj-title {
   color: var(--accent);
   font-weight: 700;
-  letter-spacing: 0.4px;
-  text-shadow: 0 0 8px color-mix(in srgb, var(--accent) 35%, transparent);
-}
-
-/* ─── Now / Wins accent styles ─── */
-.terminal-line .now-tag {
-  color: var(--accent);
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  text-shadow: 0 0 6px color-mix(in srgb, var(--accent) 30%, transparent);
-}
-.terminal-line .win-year {
-  color: var(--accent);
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  text-shadow: 0 0 6px color-mix(in srgb, var(--accent) 30%, transparent);
-}
-.terminal-line .win-metric {
-  color: #ffd166;
-  font-weight: 700;
-  background: rgba(255, 209, 102, 0.12);
-  border: 1px solid rgba(255, 209, 102, 0.28);
-  padding: 0 6px;
-  border-radius: 3px;
-  text-shadow: none;
 }
 
 /* Noscript fallback */

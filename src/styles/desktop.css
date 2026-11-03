@@ -19,7 +19,12 @@
 .window-folder-icon { display: inline-block; position: relative; width: 14px; height: 10px; flex-shrink: 0; margin: 2px 1px 0; background: #e4c872; border: 1px solid #6d591e; }
 .window-folder-icon::before { content: ''; position: absolute; width: 6px; height: 3px; background: #e4c872; border: 1px solid #6d591e; border-bottom: 0; top: -4px; left: -1px; }
 .win98-task-btn { display: flex; align-items: center; gap: 8px; }
-.menu-command-icon { width: 16px; text-align: center; font-size: 18px; }
+.win98-settings-icon { width: 16px; flex-shrink: 0; text-align: center; font-size: 16px; line-height: 1; }
+.win98-settings-arrow { margin-left: auto; }
+.win98-settings-items { border-left: 1px solid #808080; margin-left: 24px; }
+.win98-settings-items .win98-start-item { padding-left: 8px; }
+.win98-sound-check { width: 12px; margin-left: -2px; flex-shrink: 0; }
+.win98-start-menu { max-height: calc(100dvh - 44px); overflow-y: auto; }
 .win98-taskbar { padding-bottom: 2px; }
 .terminal { min-height: 0; }
 @media (max-width: 768px) {
@@ -34,7 +39,9 @@
   .win98-task-btn { min-width: 0; max-width: 140px; flex: 1; }
   .win98-systray { padding: 0 4px; }
   .win98-start-menu { bottom: calc(52px + env(safe-area-inset-bottom)); }
-  .terminal-mobile-shortcuts { display: flex; }
+  .win98-start-menu { max-height: calc(100dvh - 56px - env(safe-area-inset-bottom)); max-width: calc(100vw - 4px); }
+  .win98-start-item { min-height: 44px; }
+  .win98-desktop { height: var(--visible-height, 100dvh); }
 }
 @media (max-width: 350px) { .win98-systray { display: none; } }
 @media (prefers-reduced-motion: reduce) { .terminal::before, .terminal::after { display: none; } }

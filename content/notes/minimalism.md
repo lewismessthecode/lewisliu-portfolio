@@ -3,6 +3,7 @@ title: "Random thought on minimalism"
 tags: ["life"]
 date: 2024-03-01
 type: "note"
+draft: true
 ---
 
 Minimalism in code and minimalism in life follow the same principle:

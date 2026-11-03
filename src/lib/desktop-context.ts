@@ -13,8 +13,8 @@ export interface DesktopContextValue {
   readonly selectTask: (id: WindowId) => void
   readonly windows: Record<WindowId, WindowState>
   readonly activeWindow: WindowId | null
-  readonly currentTheme: string
-  readonly commandCount: number
+  readonly soundEnabled: boolean
+  readonly toggleSound: () => void
 }
 
 const DesktopContext = createContext<DesktopContextValue | null>(null)

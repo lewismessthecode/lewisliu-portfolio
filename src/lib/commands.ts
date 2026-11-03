@@ -31,23 +31,6 @@ function safeUrl(url: string): string {
   }
 }
 
-function tagCategory(tag: string): string {
-  const t = tag.toLowerCase();
-  if (/(ai\s*agent|^ai$|\bllm\b|agent)/.test(t)) return "ai";
-  if (/bio/.test(t)) return "bio";
-  if (/(python|fastapi|workflow|backend)/.test(t)) return "backend";
-  if (/(next\.js|react|typescript|tailwind|frontend|astro)/.test(t))
-    return "frontend";
-  if (/(finance|quant|data|real-time)/.test(t)) return "data";
-  if (/(unicode|web tool|documentation|open source)/.test(t)) return "misc";
-  return "default";
-}
-
-function renderTag(tag: string): string {
-  const cat = tagCategory(tag);
-  return `<span class="tag tag--${cat}">#${escapeHtml(tag)}</span>`;
-}
-
 export interface SiteData {
   readonly about: string;
   readonly skills: ReadonlyArray<{
@@ -88,11 +71,121 @@ function system(text: string): TerminalLine {
   return { type: "system", text };
 }
 
+type FileNode = { readonly kind: "file"; readonly content: string };
+type DirectoryNode = { readonly kind: "directory"; readonly entries: ReadonlyMap<string, FileNode | DirectoryNode> };
+type Node = FileNode | DirectoryNode;
+
+function file(content: string): FileNode {
+  return { kind: "file", content };
+}
+
+function directory(entries: Record<string, Node>): DirectoryNode {
+  return { kind: "directory", entries: new Map(Object.entries(entries)) };
+}
+
+function createFiles(data: SiteData): DirectoryNode {
+  const projects: Record<string, Node> = {};
+  for (const project of data.projects.filter((item) => item.featuredOrder !== undefined)) {
+    const slug = project.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const content = [project.title, project.description, project.body.trim(), project.github, project.demo].filter(Boolean).join("\n\n");
+    projects[`${slug}.md`] = file(content);
+  }
+  return directory({ home: directory({ lewis: directory({
+    "about.txt": file(data.about.trim()),
+    "contact.txt": file(`Email: ${data.contact.email}\nGitHub: https://github.com/${data.contact.github}\nX: https://x.com/${data.contact.twitter}`),
+    "resume.txt": file(data.resume.trim()),
+    projects: directory(projects),
+  }) }) });
+}
+
+function createFileCommands(data: SiteData): { commands: Command[]; getWorkingDirectory: () => string } {
+  const root = createFiles(data);
+  const home = ["home", "lewis"];
+  let cwd = [...home];
+
+  function resolve(path: string): { node: Node; parts: string[] } | { error: string } {
+    const absolute = path.startsWith("/");
+    const inHome = path === "~" || path.startsWith("~/");
+    const parts = absolute ? [] : inHome ? [...home] : [...cwd];
+    const input = inHome ? path.slice(1) : path;
+    let node: Node = root;
+    for (const part of parts) {
+      if (node.kind !== "directory") return { error: "Not a directory" };
+      const next = node.entries.get(part);
+      if (!next) return { error: "No such file or directory" };
+      node = next;
+    }
+    for (const part of input.split("/")) {
+      if (!part || part === ".") continue;
+      if (node.kind !== "directory") return { error: "Not a directory" };
+      if (part === "..") {
+        parts.pop();
+        node = root;
+        for (const name of parts) {
+          if (node.kind !== "directory") return { error: "Not a directory" };
+          const next = node.entries.get(name);
+          if (!next) return { error: "No such file or directory" };
+          node = next;
+        }
+      } else {
+        const next = node.entries.get(part);
+        if (!next) return { error: "No such file or directory" };
+        node = next;
+        parts.push(part);
+      }
+    }
+    if (path.endsWith("/") && node.kind !== "directory") return { error: "Not a directory" };
+    return { node, parts };
+  }
+
+  const fail = (command: string, path: string, message: string): TerminalLine[] => [{ type: "error", text: `${command}: ${path}: ${message}` }];
+  const getWorkingDirectory = () => "/" + cwd.join("/");
+  const commands: Command[] = [
+    { name: "pwd", description: "Print working directory", execute: () => [output(getWorkingDirectory())] },
+    { name: "cd", description: "Change directory", execute: (args) => {
+      if (args.length > 1) return [{ type: "error", text: "cd: too many arguments" }];
+      const path = args[0] ?? "~";
+      const result = resolve(path);
+      if ("error" in result) return fail("cd", path, result.error);
+      if (result.node.kind !== "directory") return fail("cd", path, "Not a directory");
+      cwd = result.parts;
+      return [];
+    } },
+    { name: "ls", description: "List files", execute: (args) => {
+      const paths = args.filter((arg) => !arg.startsWith("-"));
+      const flags = args.filter((arg) => arg.startsWith("-"));
+      if (flags.some((flag) => !/^-[a]+$/.test(flag))) return [{ type: "error", text: "ls: supported option is -a" }];
+      const targets = paths.length ? paths : ["."];
+      return targets.flatMap((path) => {
+        const result = resolve(path);
+        if ("error" in result) return fail("ls", path, result.error);
+        const title = targets.length > 1 ? [output(`${path}:`)] : [];
+        if (result.node.kind === "file") return [...title, output(path)];
+        const names = [...result.node.entries.keys()].sort();
+        if (flags.length) names.unshift(".", "..");
+        return [...title, output(names.join("  "))];
+      });
+    } },
+    { name: "cat", description: "Read a file", execute: (args) => {
+      if (!args.length) return [{ type: "error", text: "cat: missing file" }];
+      return args.flatMap((path) => {
+        const result = resolve(path);
+        if ("error" in result) return fail("cat", path, result.error);
+        if (result.node.kind !== "file") return fail("cat", path, "Is a directory");
+        return [output(result.node.content)];
+      });
+    } },
+  ];
+  return { commands, getWorkingDirectory };
+}
+
 export function createCommands(
   data: SiteData,
   clearFn: () => void,
-): ReadonlyMap<string, Command> {
+): { commands: ReadonlyMap<string, Command>; getWorkingDirectory: () => string } {
   const commands = new Map<string, Command>();
+  const files = createFileCommands(data);
+  for (const command of files.commands) commands.set(command.name, command);
 
   commands.set("help", {
     name: "help",
@@ -100,7 +193,7 @@ export function createCommands(
     execute: () => {
       const lines: TerminalLine[] = [
         output(""),
-        output("  Available Commands:"),
+        output("  Read-only portfolio shell"),
         output(""),
       ];
       for (const [, cmd] of commands) {
@@ -110,6 +203,30 @@ export function createCommands(
       return lines;
     },
   });
+
+  for (const [name, projectName] of [["codex", "Loadout"], ["claude", "Folio"]] as const) {
+    commands.set(name, {
+      name,
+      description: `Run a scripted ${name === "codex" ? "Codex" : "Claude Code"} demo`,
+      execute: (args) => {
+        const label = name === "codex" ? "Codex" : "Claude Code";
+        if (args.length === 0 || args[0] === "--help") {
+          return [output(`${label} demo (scripted, no AI connection)`), output(`Run '${name} demo' to see an example.`)];
+        }
+        if (args.length !== 1 || args[0] !== "demo") {
+          return [{ type: "error", text: `${name}: only the scripted demo is available. Run '${name} demo'.` }];
+        }
+        const project = data.projects.find((item) => item.title === projectName);
+        if (!project) return [output(`${label} demo (scripted): example project unavailable.`)];
+        return [
+          output(`${label} demo (scripted, no AI connection)`),
+          output(`> What is ${project.title}?`),
+          output(project.description),
+          ...(project.github ? [output(project.github)] : []),
+        ];
+      },
+    });
+  }
 
   commands.set("about", {
     name: "about",
@@ -152,17 +269,16 @@ export function createCommands(
         output("  * Projects:"),
         output(""),
       ];
-      data.projects.forEach((p, i) => {
-        const num = String(i + 1).padStart(2, "0");
+      data.projects.filter((project) => project.featuredOrder !== undefined)
+        .sort((a, b) => (a.featuredOrder ?? 99) - (b.featuredOrder ?? 99))
+        .forEach((p) => {
         lines.push(
           output(
-            `    <span class="proj-num">${num}</span>  <span class="proj-title">${escapeHtml(p.title)}</span>`,
+            `    <span class="proj-title">${escapeHtml(p.title)}</span>`,
             true,
           ),
         );
         lines.push(output(`        ${p.description}`));
-        const tagHtml = p.tags.map(renderTag).join(" ");
-        lines.push(output(`        ${tagHtml}`, true));
         if (p.github) {
           lines.push(
             output(
@@ -181,7 +297,7 @@ export function createCommands(
         }
         lines.push(output(""));
       });
-      lines.push(output("    Type 'project <number>' for details."));
+      lines.push(output("    Type 'project <name>' for details."));
       lines.push(output(""));
       lines.push(output("  See also: skills, now, wins, resume"));
       lines.push(output(""));
@@ -191,25 +307,26 @@ export function createCommands(
 
   commands.set("project", {
     name: "project",
-    description: "Show project details (project <number>)",
+    description: "Show project details (project <name>)",
     execute: (args) => {
-      // No args → show project list
       if (args.length === 0) {
         const projectsCmd = commands.get("projects");
         return projectsCmd ? projectsCmd.execute([]) : [];
       }
 
-      const num = parseInt(args[0], 10);
-      if (isNaN(num) || num < 1 || num > data.projects.length) {
+      const requested = args.join(" ").toLowerCase();
+      const normalise = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const p = /^\d+$/.test(requested)
+        ? data.projects[Number(requested) - 1]
+        : data.projects.find((item) => normalise(item.title) === normalise(requested));
+      if (!p) {
         return [
           {
             type: "error",
-            text: `Invalid project number. Use 1-${data.projects.length}.`,
+            text: `Project not found: ${args.join(" ")}. Use 'projects' to see selected projects.`,
           },
         ];
       }
-      const p = data.projects[num - 1];
-      const tagHtml = p.tags.map(renderTag).join(" ");
       const lines: TerminalLine[] = [
         output(""),
         output("  " + "─".repeat(50)),
@@ -217,7 +334,6 @@ export function createCommands(
           `  <span class="proj-title">${escapeHtml(p.title)}</span>`,
           true,
         ),
-        output(`  ${tagHtml}`, true),
         output("  " + "─".repeat(50)),
         output(""),
         output(`  ${p.description}`),
@@ -495,16 +611,13 @@ export function createCommands(
 
   commands.set("whoami", {
     name: "whoami",
-    description: "Who am I?",
-    execute: () => [
-      output("  Lewis Liu — engineer who builds across"),
-      output("  AI agents, bioinformatics, dev experience."),
-    ],
+    description: "Print the current user",
+    execute: () => [output("lewis")],
   });
 
   commands.set("now", {
     name: "now",
-    description: "What I am working on right now",
+    description: "Selected work",
     execute: () => [
       output(""),
       output("  * Selected projects:"),
@@ -522,35 +635,11 @@ export function createCommands(
   commands.set("wins", {
     name: "wins",
     description: "Recognition, papers, milestones",
-    execute: () => [
-      output(""),
-      output("  * Wins:"),
-      output(""),
-      output(
-        '    2023  <span class="win-year">Aliyun Tianchi Bio AI Challenge</span>',
-        true,
-      ),
-      output("          生命科学赛道 — 冠军 (1st) + 创新奖 (Innovation Award)"),
-      output(
-        "          Methylation-based biological-age & disease-risk prediction.",
-      ),
-      output(""),
-      output(
-        '    2024  <span class="win-year">Hum Genomics 18:114</span> — co-author',
-        true,
-      ),
-      output("          Wang T, ..., Liu Z et al."),
-      output("          Fast and accurate DNA-Seq variant calling workflow"),
-      output("          composed of LUSH toolkit."),
-      output(
-        '          <a href="https://doi.org/10.1186/s40246-024-00666-w" target="_blank" rel="noopener">DOI: 10.1186/s40246-024-00666-w</a>',
-        true,
-      ),
-      output(""),
-      output("  See also: resume, projects"),
-      output(""),
-    ],
+    execute: () => {
+      const recognition = data.resume.split("\n\n").find((section) => section.trimStart().startsWith("RECOGNITION\n"));
+      return [output(recognition ?? "See resume for recognition.")];
+    },
   });
 
-  return commands;
+  return { commands, getWorkingDirectory: files.getWorkingDirectory };
 }

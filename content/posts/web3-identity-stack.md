@@ -5,6 +5,7 @@ tags: ["web3", "tech"]
 date: 2024-03-05
 type: "post"
 lang: "en"
+draft: true
 ---
 
 The Web3 identity landscape is fascinating and fragmented. Here's my

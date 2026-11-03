@@ -12,6 +12,17 @@ export interface Theme {
 
 export const THEMES: readonly Theme[] = [
   {
+    name: "classic",
+    label: "Classic console",
+    bg: "#080808",
+    text: "#d4d4d4",
+    textDim: "#a0a0a0",
+    accent: "#f0f0f0",
+    border: "#555555",
+    glow: "none",
+    titlebarBg: "#080808",
+  },
+  {
     name: "hacker",
     label: "Classic green on black",
     bg: "#0a0a0a",
@@ -68,7 +79,7 @@ export const THEMES: readonly Theme[] = [
   },
 ] as const;
 
-export const DEFAULT_THEME = "one-dark";
+export const DEFAULT_THEME = "classic";
 
 export function getTheme(name: string): Theme | undefined {
   return THEMES.find((t) => t.name === name);

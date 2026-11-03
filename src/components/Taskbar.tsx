@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useDesktop } from '../lib/desktop-context'
 import StartMenu from './StartMenu'
 import SystemTray from './SystemTray'
@@ -6,8 +6,9 @@ import SystemTray from './SystemTray'
 export default function Taskbar() {
   const { windows, activeWindow, selectTask } = useDesktop()
   const [startOpen, setStartOpen] = useState(false)
+  const closeStart = useCallback(() => setStartOpen(false), [])
   return <>
-    {startOpen && <StartMenu onClose={() => setStartOpen(false)} />}
+    {startOpen && <StartMenu onClose={closeStart} />}
     <div className="win98-taskbar" role="toolbar" aria-label="Taskbar">
       <button className={`win98-start-btn${startOpen ? ' win98-start-btn--active' : ''}`} onClick={() => setStartOpen((open) => !open)} aria-expanded={startOpen} aria-haspopup="menu">
         <span className="win98-windows-logo" aria-hidden="true"><span className="win98-logo-red" /><span className="win98-logo-green" /><span className="win98-logo-blue" /><span className="win98-logo-yellow" /></span>Start

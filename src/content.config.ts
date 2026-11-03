@@ -25,6 +25,7 @@ const posts = defineCollection({
     date: z.coerce.date(),
     type: z.literal('post').default('post'),
     lang: z.string().optional(),
+    draft: z.boolean().default(false),
   }),
 })
 
@@ -35,6 +36,7 @@ const notes = defineCollection({
     tags: z.array(z.string()),
     date: z.coerce.date(),
     type: z.literal('note').default('note'),
+    draft: z.boolean().default(false),
   }),
 })
 

@@ -5,6 +5,7 @@ tags: ["ai", "thoughts"]
 date: 2024-03-10
 type: "post"
 lang: "en"
+draft: true
 ---
 
 The AI development landscape has shifted dramatically. As someone who

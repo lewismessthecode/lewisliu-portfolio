@@ -593,45 +593,6 @@
   font-size: 8px;
 }
 
-/* ─── Terminal StatusBar ─── */
-.terminal-statusbar {
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-  background: var(--bg);
-  border-top: 1px solid var(--border);
-  font-size: 11px;
-  color: var(--text-dim);
-  flex-shrink: 0;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.terminal-statusbar-left {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.terminal-statusbar-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #00ff41;
-  box-shadow: 0 0 4px #00ff41;
-}
-
-.terminal-statusbar-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.terminal-statusbar-sep {
-  opacity: 0.4;
-}
-
 /* ─── Reduced Motion ─── */
 @media (prefers-reduced-motion: reduce) {
   .terminal-wrapper {

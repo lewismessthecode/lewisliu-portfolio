@@ -3,9 +3,9 @@ import type { SiteData } from './commands'
 
 export const profile = {
   name: 'Lewis Liu',
-  role: 'Software engineer',
-  description: 'I build tools for AI agents, reading, and bioinformatics.',
-  bio: 'I’m a software engineer interested in useful tools and thoughtful interfaces. My work spans AI agents, developer tools, and bioinformatics. I previously worked at BGI Genomics on bioinformatics workflows and clinical interpretation.',
+  role: 'Software engineering · Bioinformatics',
+  description: 'I build tools for software and bioinformatics.',
+  bio: 'I work across software engineering and bioinformatics. I build with Codex and Claude Code, starting from first principles and choosing the simplest approach that works. I care about product judgment, thoughtful details, and editing away the generic AI feel so the result is clear and useful.',
   email: 'lewis.o.liu@gmail.com',
   github: 'lewismessthecode',
   twitter: 'leeeewisliu',
@@ -20,12 +20,12 @@ export async function getSiteData(): Promise<SiteData> {
     .sort((a, b) => a.data.order - b.data.order)
     .map(({ data, body }) => ({ ...data, body: body ?? '' }))
   const garden = [
-    ...postEntries.map((entry) => ({
+    ...postEntries.filter((entry) => !entry.data.draft).map((entry) => ({
       slug: entry.id.replace(/\.md$/, ''), title: entry.data.title,
       date: entry.data.date.toISOString().slice(0, 10), tags: entry.data.tags,
       type: 'post' as const, body: entry.body ?? '',
     })),
-    ...noteEntries.map((entry) => ({
+    ...noteEntries.filter((entry) => !entry.data.draft).map((entry) => ({
       slug: entry.id.replace(/\.md$/, ''), title: entry.data.title,
       date: entry.data.date.toISOString().slice(0, 10), tags: entry.data.tags,
       type: 'note' as const, body: entry.body ?? '',

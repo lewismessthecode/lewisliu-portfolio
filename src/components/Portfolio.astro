@@ -9,7 +9,6 @@ const featured = data.projects.filter((project) => project.featuredOrder !== und
     <a class="portfolio-wordmark" href="#top">Lewis Liu</a>
     <nav aria-label="Portfolio navigation">
       <a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a>
-      <a href="/terminal" data-terminal>Terminal</a>
     </nav>
   </header>
   <main id="main">
@@ -41,12 +40,12 @@ const featured = data.projects.filter((project) => project.featuredOrder !== und
     </section>
     <section class="portfolio-about" id="about" aria-labelledby="about-heading">
       <h2 class="portfolio-section-title" id="about-heading">About</h2>
-      <div class="portfolio-about-body"><p>{profile.bio}</p><a href="/terminal?cmd=resume" data-terminal="resume">More in the terminal ↗</a></div>
+      <div class="portfolio-about-body"><p>{profile.bio}</p></div>
     </section>
     <section class="portfolio-contact" id="contact" aria-labelledby="contact-heading">
       <h2 class="portfolio-section-title" id="contact-heading">Contact</h2>
       <div class="portfolio-contact-links"><a href={`mailto:${profile.email}`}>{profile.email} ↗</a><a href={`https://github.com/${profile.github}`}>GitHub ↗</a><a href={`https://x.com/${profile.twitter}`}>X ↗</a></div>
     </section>
   </main>
-  <footer class="portfolio-footer"><span>Lewis Liu</span><a href="/terminal?cmd=garden" data-terminal="garden">Notes &amp; writing ↗</a></footer>
+  <footer class="portfolio-footer"><span>Lewis Liu</span>{data.garden.length > 0 && <a href="/terminal?cmd=garden" data-terminal="garden">Notes &amp; writing ↗</a>}</footer>
 </div>
