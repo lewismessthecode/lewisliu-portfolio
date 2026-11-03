@@ -42,6 +42,7 @@ function isMobileViewport(): boolean {
 
 interface TerminalCoreProps {
   readonly data: SiteData;
+  readonly active: boolean;
   readonly onEngineReady?: (engine: TerminalEngine) => void;
   readonly onThemeChange?: (theme: string) => void;
   readonly onBackgroundChange?: (bg: string) => void;
@@ -50,6 +51,7 @@ interface TerminalCoreProps {
 
 export default function TerminalCore({
   data,
+  active,
   onEngineReady,
   onThemeChange,
   onBackgroundChange,
@@ -77,8 +79,6 @@ export default function TerminalCore({
     const commands = createCommands(data, clearFn);
     const engine = createTerminalEngine(commands);
     engineRef.current = engine;
-    onEngineReady?.(engine);
-
     const unsubscribe = engine.subscribe((state) => {
       setLines([...state.lines]);
       const t = loadSavedTheme();
@@ -102,6 +102,8 @@ export default function TerminalCore({
         setSrAnnouncement(lastOutput.text.replace(/<[^>]*>/g, ""));
       }
     });
+
+    onEngineReady?.(engine);
 
     const savedTheme = loadSavedTheme();
     applyTheme(savedTheme);
@@ -178,10 +180,10 @@ export default function TerminalCore({
   }, [lines, bootText, input]);
 
   useEffect(() => {
-    if (booted) {
+    if (booted && active && window.innerWidth > 768) {
       inputRef.current?.focus();
     }
-  }, [booted]);
+  }, [booted, active]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const engine = engineRef.current;

@@ -642,17 +642,3 @@
     transition: none;
   }
 }
-
-/* ─── Hide on mobile ─── */
-@media (max-width: 768px) {
-  .win98-desktop {
-    display: none;
-  }
-
-  .win98-icons,
-  .win98-taskbar,
-  .win98-start-menu,
-  .terminal-statusbar {
-    display: none !important;
-  }
-}

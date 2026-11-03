@@ -1,0 +1,40 @@
+.skip-link { position: fixed; left: 8px; top: -80px; z-index: 100; padding: 12px; background: white; color: black; }
+.skip-link:focus { top: 8px; }
+.win98-desktop { display: flex; height: 100dvh; }
+.win98-desktop-area { flex: 1; height: auto; min-height: 0; }
+.win98-icons { z-index: 2; gap: 20px; }
+.win98-icon { min-height: 72px; gap: 8px; }
+.desktop-folder { display: block; position: relative; width: 40px; height: 28px; margin-top: 6px; background: #e1c781; border: 2px solid #172f2a; box-shadow: inset 2px 2px #fff1bf; }
+.desktop-folder::before { content: ''; position: absolute; height: 7px; width: 17px; background: #e1c781; border: 2px solid #172f2a; border-bottom: 0; top: -7px; left: -2px; }
+.desktop-prompt { display: grid; place-items: center; width: 40px; height: 32px; background: #171717; border: 2px solid #d4d4d4; color: #eee; font: 600 15px 'IBM Plex Mono', monospace; }
+.desktop-window { position: absolute; display: flex; flex-direction: column; min-width: 0; min-height: 0; box-shadow: 1px 1px #000, 4px 4px 0 #0004; }
+.desktop-window[hidden] { display: none !important; }
+.desktop-window--portfolio { left: max(120px, calc((100% - 1040px)/2)); top: 32px; width: min(1040px, calc(100% - 152px)); height: calc(100% - 64px); }
+.desktop-window--terminal { left: max(160px, calc((100% - 720px)/2 + 48px)); top: 72px; width: min(720px, calc(100% - 192px)); height: min(480px, calc(100% - 104px)); }
+.desktop-window--maximized { left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; }
+.desktop-window--active { z-index: 4; }
+.desktop-window:not(.desktop-window--active) { z-index: 3; }
+.desktop-window .win98-titlebar { background: #000080; touch-action: none; }
+.desktop-window:not(.desktop-window--active) .win98-titlebar { background: #808080; }
+.window-folder-icon { display: inline-block; position: relative; width: 14px; height: 10px; flex-shrink: 0; margin: 2px 1px 0; background: #e4c872; border: 1px solid #6d591e; }
+.window-folder-icon::before { content: ''; position: absolute; width: 6px; height: 3px; background: #e4c872; border: 1px solid #6d591e; border-bottom: 0; top: -4px; left: -1px; }
+.win98-task-btn { display: flex; align-items: center; gap: 8px; }
+.menu-command-icon { width: 16px; text-align: center; font-size: 18px; }
+.win98-taskbar { padding-bottom: 2px; }
+.terminal { min-height: 0; }
+@media (max-width: 768px) {
+  .win98-desktop-area.desktop-background { align-items: stretch; justify-content: stretch; height: auto; }
+  .win98-icons { top: 12px; left: 8px; flex-direction: row; gap: 8px; }
+  .win98-icon { width: 64px; }
+  .desktop-window--portfolio, .desktop-window--terminal { left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; }
+  .desktop-window .win98-titlebar { min-height: 40px; }
+  .desktop-window .win98-btn { width: 36px; height: 32px; font-size: 16px; }
+  .win98-taskbar { height: calc(52px + env(safe-area-inset-bottom)); padding: 4px 4px calc(4px + env(safe-area-inset-bottom)); }
+  .win98-start-btn, .win98-task-btn { min-height: 44px; }
+  .win98-task-btn { min-width: 0; max-width: 140px; flex: 1; }
+  .win98-systray { padding: 0 4px; }
+  .win98-start-menu { bottom: calc(52px + env(safe-area-inset-bottom)); }
+  .terminal-mobile-shortcuts { display: flex; }
+}
+@media (max-width: 350px) { .win98-systray { display: none; } }
+@media (prefers-reduced-motion: reduce) { .terminal::before, .terminal::after { display: none; } }
