@@ -5,7 +5,7 @@ tags: ["AI agents", "Bioinformatics", "Workflows"]
 github: "https://github.com/lewismessthecode/BioinfoFlow"
 demo: "https://bioinfoflow.com/"
 order: 1
-featuredOrder: 3
+featuredOrder: 1
 image: "/projects/bioinfoflow.webp"
 ---
 

@@ -3,14 +3,26 @@ import type { ReactNode, MouseEvent } from 'react'
 import type { TerminalEngine } from '../lib/terminal-engine'
 import type { SiteData } from '../lib/commands'
 import { DesktopProvider, type WindowId } from '../lib/desktop-context'
+import { cascadeCountStyle } from '../lib/cascade-frame'
 import { initialDesktopState, isVisible, reduceDesktop } from '../lib/window-state'
 import { loadSoundEnabled, playDesktopClick, saveSoundEnabled } from '../lib/desktop-sound'
 import TerminalCore from './TerminalCore'
 import DesktopIcons from './DesktopIcons'
 import Taskbar from './Taskbar'
 import Window from './Window'
+import Resume from './Resume'
 
-export default function Desktop({ data, children }: { readonly data: SiteData; readonly children: ReactNode }) {
+const frames = [
+  { id: 'portfolio', title: 'Portfolio', icon: 'folder' },
+  { id: 'resume', title: 'Resume', icon: 'document' },
+  { id: 'terminal', title: 'C:\\Lewis\\Terminal.exe', icon: 'terminal' },
+] as const
+
+type Listed = (typeof frames)[number]['id']
+type RestingCoversWindows = Exclude<WindowId, Listed> extends never ? true : never
+const restingCoversWindows: RestingCoversWindows = true
+
+export default function Desktop({ data, resumePages, children }: { readonly data: SiteData; readonly resumePages: { readonly en: string; readonly zh: string }; readonly children: ReactNode }) {
   const [state, dispatch] = useReducer(reduceDesktop, initialDesktopState)
   const [currentBackground, setCurrentBackground] = useState('teal')
   const [soundEnabled, setSoundEnabled] = useState(false)
@@ -78,20 +90,29 @@ export default function Desktop({ data, children }: { readonly data: SiteData; r
     if (command) executeCommand(command)
     else openWindow('terminal')
   }
+  const windowChildren = (id: Listed): ReactNode => {
+    switch (id) {
+      case 'portfolio':
+        return <div className="portfolio-scroll" onClick={onPortfolioClick}>{children}</div>
+      case 'resume':
+        return <Resume pages={resumePages} />
+      case 'terminal':
+        return <TerminalCore data={data} active={state.active === 'terminal' && isVisible(state.windows.terminal)} onEngineReady={handleEngineReady} onBackgroundChange={setCurrentBackground} />
+    }
+  }
   const context = { executeCommand, openWindow, focusWindow, minimizeWindow, maximizeWindow, closeWindow, selectTask, windows: state.windows, activeWindow: state.active, soundEnabled, toggleSound }
 
   return <DesktopProvider value={context}>
     <div ref={desktopRef} className="win98-desktop" onClickCapture={(event) => {
       if (soundEnabled && event.target instanceof Element && event.target.closest('.win98-icons button, .win98-titlebar-buttons button, .win98-taskbar button, .win98-start-menu button')) playDesktopClick()
     }}>
-      <div className="win98-desktop-area desktop-background" data-bg={currentBackground !== 'teal' ? currentBackground : undefined}>
+      <div className="win98-desktop-area desktop-background" data-bg={currentBackground !== 'teal' ? currentBackground : undefined} style={cascadeCountStyle(frames.length)}>
         <DesktopIcons />
-        <Window id="portfolio" title="Portfolio" icon="folder">
-          <div className="portfolio-scroll" onClick={onPortfolioClick}>{children}</div>
-        </Window>
-        <Window id="terminal" title={'C:\\Lewis\\Terminal.exe'} icon="terminal">
-          <TerminalCore data={data} active={state.active === 'terminal' && isVisible(state.windows.terminal)} onEngineReady={handleEngineReady} onBackgroundChange={setCurrentBackground} />
-        </Window>
+        {frames.map((frame, cascadeSlot) => (
+          <Window key={frame.id} id={frame.id} title={frame.title} icon={frame.icon} cascadeSlot={cascadeSlot} cascadeCount={frames.length}>
+            {windowChildren(frame.id)}
+          </Window>
+        ))}
       </div>
       <Taskbar />
     </div>

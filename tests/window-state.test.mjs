@@ -4,7 +4,7 @@ import { initialDesktopState, reduceDesktop } from '../src/lib/window-state.ts'
 
 test('opening and focusing windows keeps both available', () => {
   const opened = reduceDesktop(initialDesktopState, { type: 'open', id: 'terminal' })
-  assert.deepEqual(opened, { windows: { portfolio: 'normal', terminal: 'normal' }, active: 'terminal' })
+  assert.deepEqual(opened, { windows: { portfolio: 'normal', terminal: 'normal', resume: 'closed' }, active: 'terminal' })
   const focused = reduceDesktop(opened, { type: 'task', id: 'portfolio' })
   assert.equal(focused.active, 'portfolio')
   assert.equal(focused.windows.terminal, 'normal')
@@ -28,4 +28,12 @@ test('taskbar toggles the active window and reopens the desktop', () => {
   state = reduceDesktop(state, { type: 'task', id: 'portfolio' })
   assert.equal(state.windows.portfolio, 'normal')
   assert.equal(state.active, 'portfolio')
+})
+
+test('closing a window returns focus to another visible window', () => {
+  const opened = reduceDesktop(initialDesktopState, { type: 'open', id: 'resume' })
+  assert.equal(opened.active, 'resume')
+  const closed = reduceDesktop(opened, { type: 'close', id: 'resume' })
+  assert.equal(closed.windows.resume, 'closed')
+  assert.equal(closed.active, 'portfolio')
 })

@@ -1,0 +1,30 @@
+.resume-window { display: flex; flex: 1; flex-direction: column; min-height: 0; background: #c0c0c0; }
+.resume-toolbar { display: flex; align-items: center; gap: 8px; flex-shrink: 0; padding: 4px 6px; background: #c0c0c0; border-bottom: 1px solid #808080; }
+.resume-languages { display: flex; gap: 2px; margin-right: auto; }
+.resume-btn { min-width: 46px; height: 22px; padding: 0 8px; background: #c0c0c0; border: 2px solid; border-color: #fff #808080 #808080 #fff; color: #000; font: 11px 'Segoe UI', Tahoma, sans-serif; cursor: pointer; }
+.resume-btn--active { background: #d2d2d2; border-color: #808080 #fff #fff #808080; }
+.resume-btn:focus-visible, .resume-pdf:focus-visible { outline: 1px dotted #000; outline-offset: -4px; }
+.resume-pdf { color: #000080; font: 11px 'Segoe UI', Tahoma, sans-serif; text-decoration: none; }
+.resume-pdf:hover { text-decoration: underline; }
+.resume-page { flex: 1; min-height: 0; overflow: auto; padding: 8px; }
+.resume-doc { max-width: 660px; margin: 0 auto; padding: 28px 32px 40px; background: #fff; border: 2px solid; border-color: #808080 #fff #fff #808080; color: #111; font: 12.5px/1.6 'Segoe UI', Tahoma, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+.resume-doc h1 { margin: 0 0 6px; font: 700 22px/1.2 'Segoe UI', Tahoma, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+.resume-doc h1 + p { margin: 0 0 10px; color: #444; }
+.resume-doc h2 { margin: 22px 0 8px; padding-top: 8px; border-top: 1px solid #b8b8b8; color: #000080; font: 700 11px/1 'Segoe UI', Tahoma, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.resume-doc h3 { margin: 14px 0 2px; font-size: 13.5px; }
+.resume-doc h4 { margin: 12px 0 2px; font-size: 12.5px; }
+.resume-doc p, .resume-doc ul, .resume-doc ol { margin: 6px 0; }
+.resume-doc ul, .resume-doc ol { padding-left: 18px; }
+.resume-doc li { margin: 2px 0; }
+.resume-doc a { color: #0000ee; text-underline-offset: 2px; }
+.resume-doc a:visited { color: #551a8b; }
+.resume-doc code { padding: 0 3px; background: #efefef; font: 11.5px 'IBM Plex Mono', monospace; }
+.resume-doc table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+.resume-doc th, .resume-doc td { padding: 4px 6px; border-bottom: 1px solid #d8d8d8; text-align: left; vertical-align: top; }
+.resume-doc th { background: #e8e8e8; font-weight: 700; }
+@media (max-width: 560px) {
+  .resume-page { padding: 4px; }
+  .resume-doc { padding: 18px 16px 28px; font-size: 12px; }
+  .resume-btn { height: 32px; padding: 0 12px; font-size: 12px; }
+  .resume-pdf { padding: 8px 4px; font-size: 12px; }
+}
