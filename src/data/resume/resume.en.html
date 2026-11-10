@@ -40,109 +40,103 @@ em{font-style:italic}
 <body>
 <main>
 <h1>Lewis Liu</h1>
-<p>AI engineer. I work on LLM agents, self-hosted model deployment, and full-stack tools.</p>
-<ul>
-<li>Phone: +86 186 8052 0801</li>
-<li>Email: <a href="mailto:lewis.o.liu@gmail.com">lewis.o.liu@gmail.com</a></li>
-<li>Website: <a href="https://lewisliu.space">lewisliu.space</a></li>
-<li>GitHub: <a href="https://github.com/lewismessthecode">github.com/lewismessthecode</a></li>
-<li>Looking for: AI application or agent engineering, AI automation and internal tools, full-stack roles. Based in mainland China, open to relocation and remote work.</li>
-</ul>
+<p>AI Engineer · LLM Agents, Self-Hosted LLMs &amp; Developer Tools</p>
+<p>+86 186 8052 0801 · <a href="mailto:lewis.o.liu@gmail.com">lewis.o.liu@gmail.com</a> · <a href="https://lewisliu.space">lewisliu.space</a> · <a href="https://github.com/lewismessthecode">github.com/lewismessthecode</a> · <a href="resume.zh.html">中文</a></p>
+<p>Open to AI application and agent engineering, AI automation and internal tools, and full-stack roles · Based in mainland China, open to relocation and remote</p>
 <h2>Summary</h2>
-<p>I have four years of software development and production data pipeline experience. For the past year I have focused on LLM agents and developer tools. I built and released two open-source projects on my own, BioinfoFlow and Loadout.</p>
-<p>From June to August 2026 I designed and deployed the department's self-hosted LLM service at BGI Genomics on my own. I served DeepSeek with vLLM on an 8× H20 server and set up a LiteLLM multi-user gateway, Prometheus and Grafana monitoring, and an OpenWebUI knowledge base.</p>
-<p>I have done medical LLM evaluation and domain fine-tuning. I hold an M.S. in Molecular Biology and know genomic and clinical data.</p>
+<ul>
+<li>Software engineer with four years across LLM agents, on-prem model serving, and production genomics pipelines.</li>
+<li>Shipped open-source BioinfoFlow, Trove, Loadout, and Folio.</li>
+<li>M.S. in Molecular Biology with genomic and clinical data experience.</li>
+</ul>
 <h2>Open-source projects</h2>
-<h3>BioinfoFlow</h3>
-<p>Agentic bioinformatics workflow platform. Solo project, MIT license. Dec 2025 to present, built as a side project alongside my BGI role.</p>
-<p><a href="https://bioinfoflow.com">bioinfoflow.com</a> · <a href="https://github.com/lewismessthecode/BioinfoFlow">GitHub</a> · Python, TypeScript, FastAPI, Next.js, Docker</p>
-<p>Users describe an analysis in plain language. The agent reads the project files and prepares inputs and parameters. After the user approves, it submits a Nextflow or WDL run, follows the logs, and explains the results. Data and compute stay on the user's own machine or server.</p>
+<h3>BioinfoFlow　Dec 2025 – Present</h3>
+<p>Agentic bioinformatics workflow platform · MIT · Side project · <a href="https://bioinfoflow.com">bioinfoflow.com</a> · <a href="https://github.com/lewismessthecode/BioinfoFlow">GitHub</a> · Python, TypeScript, FastAPI, Next.js, Docker</p>
 <ul>
-<li>Wrote the agent runtime. Sessions are durable and history is append-only. The model uses a few general tools (<code>read</code>, <code>bash</code>, <code>edit</code>, <code>write</code>, <code>ask_user</code>) and drives the product through its CLI.</li>
-<li>The runtime handles context compression, retries, cancellation, and checkpoint recovery. It has three permission modes: ask before changes, ask before dangerous actions, and full access.</li>
-<li>The backend uses FastAPI and a Typer CLI. One engine interface covers Nextflow and MiniWDL.</li>
-<li>A persistent scheduler handles queueing, resource checks, retries, timeouts, and cleanup. Run state streams to the UI over SSE and WebSocket.</li>
-<li>The Next.js UI has pages for workspaces, the dashboard, the agent, workflows, runs (logs, DAGs, outputs), container images, the scheduler, and settings.</li>
-<li>SSH remote hosts: save profiles, test hosts, open in-browser terminals, and hand a selected host to the agent. Remote agent commands run in a Bubblewrap sandbox.</li>
-<li>Ships as Docker Compose with a one-line installer. Released v0.1.0 (Jul 2026) and v0.2.0 (Jul 2026) on GitHub.</li>
-<li>The repository includes an nf-core/rnaseq demo, WDL fixtures, and NVIDIA Parabricks WGS examples that run on a single consumer GPU such as an RTX 4080 SUPER.</li>
+<li>Shipped a natural-language bioinformatics platform: the agent reads the project, prepares inputs and parameters, submits Nextflow or WDL runs after user approval, follows logs, and explains results.</li>
+<li>Kept data and compute on the user's own hardware with a local-first architecture.</li>
+<li>Architected the agent runtime for resumable long-running tasks, using durable sessions, append-only history, and a small tool set (<code>read</code>, <code>bash</code>, <code>edit</code>, <code>write</code>, <code>ask_user</code>) that drives the product through its CLI.</li>
+<li>Added approval gates for risky actions through three permission modes: ask before changes, ask before dangerous actions, and full access.</li>
+<li>Implemented context compression, retries, and cancellation to keep long sessions stable.</li>
+<li>Built a unified execution backend that drives Nextflow and MiniWDL through one interface, using FastAPI and a Typer CLI.</li>
+<li>Built a persistent scheduler for queueing, resource checks, retries, timeouts, and cleanup, streaming run state over SSE and WebSocket.</li>
+<li>Delivered a Next.js workspace covering projects, dashboard, agent, workflows, runs (logs, DAGs, outputs), images, scheduler, and settings.</li>
+<li>Added SSH remote host management with connection checks, in-browser terminals, and per-host agent access, sandboxing remote commands in Bubblewrap.</li>
+<li>Released v0.1.0 and v0.2.0 (Jul 2026) with a one-line installer, packaged as Docker Compose.</li>
+<li>Wrote nf-core/rnaseq, WDL, and NVIDIA Parabricks WGS examples; GPU workflows run on a single consumer GPU such as an RTX 4080 SUPER.</li>
 </ul>
-<h3>Trove</h3>
-<p>Workspace for starred GitHub repositories. MIT license. Nov 2026.</p>
-<p><a href="https://github.com/lewismessthecode/trove">GitHub</a> · TypeScript, Next.js, React, SQLite</p>
-<p>Trove organizes the repositories you have starred on GitHub, on your own machine. Data lives in a local SQLite file.</p>
+<h3>Trove　Nov 2026</h3>
+<p>Workspace for starred GitHub repositories · MIT · <a href="https://github.com/lewismessthecode/trove">GitHub</a> · TypeScript, Next.js, React, SQLite</p>
 <ul>
-<li>Organize repositories with tags and collections. With a model configured, AI can categorize them for you.</li>
-<li>A repository graph links repositories that share a tag, a collection, or a topic, drawn with a force-directed layout.</li>
-<li>Radar suggests new repositories from sources such as GitHub search and Hacker News.</li>
-<li>A Releases inbox collects new versions of the repositories you use and flags likely breaking changes.</li>
-<li>AI writes a health report for a repository.</li>
-<li>A built-in MCP server lets coding assistants call Trove with a token. A CLI mints and revokes tokens.</li>
-<li>Model providers: OpenRouter, OpenAI, Anthropic, DeepSeek, local Ollama, and any OpenAI-compatible server. The Ollama URL must be a loopback address.</li>
-<li>English and Chinese interface. Runs with Docker Compose.</li>
+<li>Organizes starred GitHub repos with tags, collections, and AI categorization, stored in local SQLite.</li>
+<li>Maps related repos in a force-directed graph linked by shared tags, collections, and topics.</li>
+<li>Surfaces new repos through Radar, drawing on GitHub search and Hacker News.</li>
+<li>Tracks new releases of repos in use and flags likely breaking changes.</li>
+<li>Generates AI health reports for repositories.</li>
+<li>Exposes a built-in MCP server to coding assistants via tokens minted and revoked from the CLI.</li>
+<li>Supports OpenRouter, OpenAI, Anthropic, DeepSeek, local Ollama, and any OpenAI-compatible server, with Ollama restricted to loopback addresses.</li>
+<li>Ships an English and Chinese UI and runs with Docker Compose.</li>
 </ul>
-<h3>Loadout</h3>
-<p>macOS manager for AI agent skills. Solo project, MIT license. Oct 2026.</p>
-<p><a href="https://github.com/lewismessthecode/loadout">GitHub</a> · Rust, Tauri 2, React, SQLite</p>
+<h3>Loadout　Oct 2026</h3>
+<p>macOS manager for AI agent skills · MIT · <a href="https://github.com/lewismessthecode/loadout">GitHub</a> · Rust, Tauri 2, React, SQLite</p>
 <ul>
-<li>Released v0.2.1 as a universal build that runs natively on Apple silicon and Intel.</li>
-<li>Scans <code>~/.agents</code> and the skill folders of Claude Code, Codex, Cursor, Gemini, and OpenCode, and merges them into one deduplicated list. A symlinked skill shows once with several installs.</li>
-<li>Installs, updates, and deletes skills in the app. An update keeps the previous folder as a backup. Deleted files go to the Trash.</li>
-<li>The Rust side scans folders, watches them with a debounced file watcher, and parses agent session logs. Usage is indexed into SQLite with only the skill, the agent, and the day. Prompts and replies are never copied.</li>
-<li>Shows a usage heatmap. The UI is in English and Chinese, with light, dark, and system appearance.</li>
-<li>Asks for no Full Disk Access, Automation, Accessibility, or Screen Recording permission.</li>
+<li>Shipped v0.2.1 as a universal build for Apple silicon and Intel Macs.</li>
+<li>Unified skills from <code>~/.agents</code>, Claude Code, Codex, Cursor, Gemini, and OpenCode into one deduplicated list, showing each symlinked skill once with all its install locations.</li>
+<li>Built in-app install, update, and delete, with automatic backups before updates and deletes sent to the Trash.</li>
+<li>Built a skill-usage heatmap from agent session logs that stores only skill, agent, and day, using a Rust scanner, debounced file watcher, log parsers, and an incremental SQLite index.</li>
+<li>Delivered an English and Chinese UI with light, dark, and system themes.</li>
+<li>Limited file access to the user's home folder, with no Full Disk Access, Automation, Accessibility, or Screen Recording permission.</li>
 </ul>
-<h3>Folio</h3>
-<p>Local Markdown library for the X Articles you saved. Apache-2.0 license, macOS Apple Silicon preview. Nov 2026.</p>
-<p><a href="https://github.com/lewismessthecode/folio-reader">GitHub</a> · TypeScript, Electron, React</p>
+<h3>Folio　Nov 2026</h3>
+<p>Local reading library for saved X Articles · Apache-2.0 · macOS Apple Silicon preview · <a href="https://github.com/lewismessthecode/folio-reader">GitHub</a> · TypeScript, Electron, React</p>
 <ul>
-<li>Imports X Articles from your bookmarks through a Chrome extension. Requests run in the background and do not open or refresh X tabs.</li>
-<li>Saves articles as local Markdown with local images. You can open the same folder in Obsidian or Cursor.</li>
-<li>Browse by topic and reading status, rate articles, and add annotations.</li>
-<li>Optionally organizes selected articles into topic notes and cards with your own model API key. You review the output before it is saved. The key is encrypted with the system's secure storage.</li>
-<li>English and Chinese UI, with light, dark, and system appearance.</li>
+<li>Built a Chrome extension that imports X Articles from bookmarks in the background, without opening or refreshing X tabs.</li>
+<li>Stored articles and images as local Markdown, so the same folder opens in Obsidian or Cursor.</li>
+<li>Added browsing by topic and reading status, ratings, and annotations.</li>
+<li>Added bring-your-own-key AI that turns selected articles into topic notes and cards for review before saving, with keys encrypted in the system's secure storage.</li>
+<li>Delivered an English and Chinese UI with light, dark, and system themes.</li>
 </ul>
 <h2>Experience</h2>
-<h3>BGI Genomics · Software Development Engineer, Shenzhen</h3>
-<p>Jul 2022 to Oct 2026</p>
-<h4>Self-hosted LLM service (Jun – Aug 2026, sole engineer)</h4>
-<p>I designed, deployed, monitored, and documented this service on my own.</p>
+<h3>BGI Genomics · Software Development Engineer, Shenzhen　Jul 2022 – Oct 2026</h3>
+<h4>Self-hosted LLM service　Jun – Aug 2026</h4>
 <ul>
-<li>Deployed DeepSeek-V4-Flash with vLLM on the department's 8× H20 server: tensor parallel across 8 GPUs, expert parallel, and FP8 KV cache. The OpenAI-compatible API serves OpenWebUI, BioinfoFlow, and colleagues' projects.</li>
-<li>Pinned the vLLM image by digest so a later pull cannot change the version.</li>
-<li>Set up a LiteLLM gateway. Each colleague, project, and service gets its own virtual key, and the raw model key is never shared. Each key can limit requests per minute, tokens per minute, budget, and parallel requests.</li>
-<li>Key management scripts cover create, show, block, unblock, and rotate.</li>
-<li>Prometheus collects metrics, DCGM exporter collects GPU metrics, and Grafana shows the dashboards.</li>
-<li>Built two Grafana dashboards. The capacity dashboard shows health, estimated remaining concurrency, running and waiting requests, KV cache usage, TTFT P95, and TPOT P95. The usage dashboard counts requests and tokens per key.</li>
-<li>Found that the server clock ran about 8 hours fast. Added a time offset to the dashboard queries and documented that it must be removed once NTP is fixed.</li>
-<li>Wrote the operations runbook: start and stop, key management, dashboard reading, and troubleshooting.</li>
+<li>Designed and launched a fully on-prem LLM service behind an OpenAI-compatible API for the team knowledge base, BioinfoFlow, and internal projects, serving DeepSeek-V4-Flash on 8×H20 via vLLM (tensor + expert parallelism, FP8 KV cache).</li>
+<li>Pinned the vLLM image by digest to prevent version drift on re-pulls.</li>
+<li>Built a multi-tenant LiteLLM gateway that issues virtual keys per colleague, project, and service, keeping the raw model key private.</li>
+<li>Enforced per-key limits on requests per minute, tokens per minute, budget, and parallel calls.</li>
+<li>Shipped key management scripts to create, inspect, block, unblock, and rotate keys.</li>
+<li>Built GPU and inference observability with Prometheus, DCGM exporter, and Grafana.</li>
+<li>Designed a capacity dashboard tracking health, estimated headroom, running and waiting requests, KV cache usage, TTFT P95, and TPOT P95.</li>
+<li>Designed a usage dashboard reporting requests and tokens per key.</li>
+<li>Fixed misaligned metrics by tracing an 8-hour server clock skew, adding a query offset, and documenting the rollback once NTP is fixed.</li>
+<li>Deployed BioinfoFlow v0.2.0 on the same server, sharing the LiteLLM gateway with OpenWebUI.</li>
+<li>Delivered reusable agent skills for sequencing workflows, WGS, and platform operations.</li>
+<li>Wrote the operations runbook covering start and stop, key management, dashboards, and troubleshooting.</li>
 </ul>
-<h4>OpenWebUI knowledge base</h4>
+<h4>OpenWebUI knowledge base　Jun – Aug 2026</h4>
 <ul>
-<li>Deployed OpenWebUI v0.9.6 as the department's knowledge base, chat front end, and RAG layer. Chat, embeddings, file parsing, and vector search all run on the internal network.</li>
-<li>PostgreSQL stores users, chats, and permissions. PGVector stores knowledge base vectors. Redis handles sessions, token revocation, and WebSocket. Apache Tika parses Word, PDF, PowerPoint, and Excel files.</li>
-<li>Served the BGE-M3 embedding model (1024-dimension vectors) with vLLM on one GPU of the same server. Lowered DeepSeek's GPU memory share from 0.90 to 0.85 to make room.</li>
-<li>Turned on hybrid search and set starting values for chunk size, overlap, and top-k.</li>
-<li>Wrote the production deployment guide: Docker Compose setup, verification, backup and restore, upgrades, conditions for scaling out, and common failures.</li>
-<li>The launch checklist includes a recall test with real business questions and a stability check under multi-user load.</li>
+<li>Launched an on-prem OpenWebUI knowledge base (v0.9.6) that keeps chat, embeddings, file parsing, and vector search inside the network.</li>
+<li>Designed the storage and parsing stack: PostgreSQL for users, chats, and permissions; PGVector for embeddings; Redis for sessions, token revocation, and WebSocket; Apache Tika for Word, PDF, PowerPoint, and Excel.</li>
+<li>Deployed a local BGE-M3 embedding service (1024 dimensions) on the DeepSeek server, lowering DeepSeek's GPU memory share from 0.90 to 0.85 to free capacity.</li>
+<li>Enabled hybrid search and set starting values for chunk size, overlap, and top-k.</li>
+<li>Wrote the production deployment guide covering Docker Compose setup, verification, backup and restore, upgrades, scale-out criteria, and common failures.</li>
+<li>Defined the launch checklist, including a recall test on real business questions and a stability check under multi-user load.</li>
 </ul>
-<h4>BioinfoFlow internal deployment</h4>
+<h4>Medical LLM evaluation　Dec 2023 – Feb 2024</h4>
 <ul>
-<li>Deployed BioinfoFlow v0.2.0 on the same H20 server. It shares the LiteLLM gateway and the DeepSeek service with OpenWebUI.</li>
-<li>Collected reusable agent skills for colleagues, covering sequencing workflows, WGS, and platform operations.</li>
+<li>Built an LLM pipeline that extracts ACMG evidence criteria from variant data to support clinical variant interpretation.</li>
+<li>Built a prompt evaluation benchmark, <a href="https://github.com/lewismessthecode/medprompt-eval">medprompt-eval</a>.</li>
 </ul>
-<h4>Medical LLM evaluation and fine-tuning</h4>
+<h4>Domain fine-tuning</h4>
 <ul>
-<li>Dec 2023 to Feb 2024: built an LLM pipeline that extracts ACMG evidence criteria from variant data to support clinical variant interpretation.</li>
-<li>Built a prompt evaluation benchmark, on GitHub as <a href="https://github.com/lewismessthecode/medprompt-eval">medprompt-eval</a>.</li>
-<li>Fine-tuned LLaMA-7B and BioGPT on about 10,000 HPO records, covering data cleaning, instruction building, training, and evaluation.</li>
+<li>Fine-tuned LLaMA-7B and BioGPT on ~10,000 HPO records, including data cleaning, instruction building, training, and evaluation.</li>
 </ul>
 <h4>Production NGS pipelines</h4>
 <ul>
-<li>Contributed to building and maintaining 10+ production NGS pipelines: pan-cancer, NIPT, WGS, and hereditary hearing loss. They cover QC, alignment, variant calling, annotation, and reporting.</li>
-<li>Introduced pipeline engineering standards: Git versioning, input and output contracts, containerized runtimes, and unit tests.</li>
+<li>Developed and maintained 10+ production NGS pipelines (pan-cancer, NIPT, WGS, hereditary hearing loss) covering QC, alignment, variant calling, annotation, and reporting.</li>
+<li>Introduced pipeline engineering standards: Git versioning, input/output contracts, containerized runtimes, and unit tests.</li>
 <li>Ran and debugged jobs on HPC clusters.</li>
-<li>Documented edge cases, parameter limits, and failure modes so production runs are more stable and reproducible.</li>
+<li>Documented edge cases, parameter limits, and failure modes to make production runs more stable and reproducible.</li>
 </ul>
 <h2>Skills</h2>
 <table>
@@ -155,10 +149,10 @@ em{font-style:italic}
 <tbody>
 <tr>
 <td>AI / LLM</td>
-<td>Agent runtimes and tool calling, prompt engineering, LLM evaluation and benchmark design, fine-tuning, training data, RAG; daily Claude Code, Codex, Cursor</td>
+<td>Agent runtimes and tool calling, prompt engineering, LLM evaluation and benchmark design, fine-tuning, training data, RAG; Claude Code, Codex, Cursor</td>
 </tr>
 <tr>
-<td>LLM deployment</td>
+<td>LLM serving</td>
 <td>vLLM, LiteLLM, OpenWebUI, PGVector, BGE-M3, Apache Tika, Prometheus, Grafana, DCGM</td>
 </tr>
 <tr>
@@ -189,11 +183,11 @@ em{font-style:italic}
 </table>
 <h2>Awards</h2>
 <ul>
-<li>2023, Champion and Innovation Award, Alibaba Cloud Tianchi World Science Intelligence Competition, Life Science track. Predicted biological age and disease risk from DNA methylation data with AutoGluon and MLP models.</li>
+<li>Champion and Innovation Award, Life Science track, Alibaba Cloud Tianchi World Science Intelligence Competition (2023): predicted biological age and disease risk from DNA methylation data with AutoGluon and MLP models.</li>
 </ul>
 <h2>Education</h2>
 <ul>
-<li>South China Agricultural University, B.S. and M.S. in Molecular Biology, 2015 to 2022.</li>
+<li>South China Agricultural University, B.S. and M.S. in Molecular Biology, 2015 – 2022.</li>
 </ul>
 <h2>Publication</h2>
 <ul>
