@@ -33,6 +33,7 @@ export default function StartMenu({ onClose }: { readonly onClose: () => void })
     <div className="win98-start-sidebar"><span className="win98-start-sidebar-text">Lewis Liu</span></div>
     <div className="win98-start-items">
       <button className="win98-start-item" role="menuitem" onClick={() => { openWindow('portfolio'); onClose() }}><span className="window-folder-icon" aria-hidden="true" />Portfolio</button>
+      <button className="win98-start-item" role="menuitem" onClick={() => { openWindow('resume'); onClose() }}><span className="window-document-icon" aria-hidden="true" />Resume</button>
       <button className="win98-start-item" role="menuitem" onClick={() => { openWindow('terminal'); onClose() }}><span className="win98-terminal-icon" aria-hidden="true" />Terminal</button>
       <div className="win98-start-separator" role="separator" />
       <button className="win98-start-item" role="menuitem" aria-expanded={settingsOpen} onClick={() => setSettingsOpen((open) => !open)}><span className="win98-settings-icon" aria-hidden="true">⚙</span>Settings <span className="win98-settings-arrow" aria-hidden="true">{settingsOpen ? '▾' : '▸'}</span></button>

@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>刘智健 Lewis Liu · 简历</title>
+<meta name="description" content="刘智健 Lewis Liu · 简历">
+<style>
+:root{--ink:#1a1a1a;--mute:#555;--line:#d4d4d4;--bg:#fff}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font-family:"Geist","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Microsoft YaHei",sans-serif;
+ font-size:16px;line-height:1.7}
+main{max-width:760px;margin:0 auto;padding:56px 24px 80px}
+h1{font-size:2.4rem;line-height:1.15;margin:0 0 .4rem;font-weight:700}
+h1+p{color:var(--mute);font-size:1.1rem;margin:0 0 1rem}
+h2{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin:2.6rem 0 1rem;padding-top:.8rem;border-top:1px solid var(--line)}
+h2:lang(zh-CN){letter-spacing:0}
+h3{font-size:1.2rem;margin:1.8rem 0 .2rem}
+h3+p{color:var(--mute);margin:.1rem 0 .3rem}
+h4{font-size:1rem;margin:1.4rem 0 .3rem}
+p{margin:.5rem 0}
+ul{padding-left:1.2rem;margin:.4rem 0}
+li{margin:.25rem 0}
+a{color:var(--ink);text-decoration:underline;text-decoration-color:#9a9a9a;text-underline-offset:2px}
+a:hover{text-decoration-color:var(--ink)}
+code{font-family:"JetBrains Mono","SFMono-Regular",Menlo,Consolas,monospace;font-size:.88em;background:#f3f3f3;padding:.05em .3em;border-radius:3px}
+table{border-collapse:collapse;width:100%;margin:.6rem 0;font-size:.95rem}
+th,td{text-align:left;vertical-align:top;padding:.45rem .6rem .45rem 0;border-bottom:1px solid var(--line)}
+th{font-size:.8rem;color:var(--mute);font-weight:600}
+td:first-child{white-space:nowrap;font-weight:600;padding-right:1.2rem}
+em{font-style:italic}
+:lang(zh-CN) em{font-style:normal}
+@media (max-width:560px){main{padding:32px 18px 56px}h1{font-size:2rem}td:first-child{white-space:normal}}
+@page{size:A4;margin:16mm 16mm 16mm}
+@media print{body{font-size:10.5pt;line-height:1.6}main{padding:0;max-width:none}h2{break-after:avoid}h3,h4{break-after:avoid}li,tr{break-inside:avoid}}
+</style>
+</head>
+<body>
+<main>
+<h1>刘智健 Lewis Liu</h1>
+<p>AI 应用工程师。方向是 LLM Agent、私有化模型部署和全栈开发。</p>
+<ul>
+<li>电话：186 8052 0801</li>
+<li>邮箱：<a href="mailto:lewis.o.liu@gmail.com">lewis.o.liu@gmail.com</a></li>
+<li>网站：<a href="https://lewisliu.space">lewisliu.space</a></li>
+<li>GitHub：<a href="https://github.com/lewismessthecode">github.com/lewismessthecode</a></li>
+<li>求职意向：AI 应用 / Agent 工程师，AI 自动化与内部工具开发，全栈开发。城市不限，可接受海外远程。</li>
+</ul>
+<h2>简介</h2>
+<p>我有 4 年软件开发和生产数据流程经验。近一年我主要做 LLM Agent 应用和开发工具。我独立开发并发布了开源项目 BioinfoFlow 和 Loadout。</p>
+<p>2026 年 6 月到 8 月，我在华大独立完成了部门的私有化大模型服务。我在 8 卡 H20 服务器上用 vLLM 部署了 DeepSeek，并搭建了 LiteLLM 多用户网关、Prometheus 和 Grafana 监控，以及 OpenWebUI 部门知识库。</p>
+<p>我做过医学 LLM 评测和领域微调。我是分子生物学硕士，熟悉基因组和临床数据。</p>
+<h2>开源项目</h2>
+<h3>BioinfoFlow</h3>
+<p>Agent 驱动的生信工作流平台。独立开发，MIT 开源。2025.12 至今，为业余个人项目，与华大在职时间并行。</p>
+<p><a href="https://bioinfoflow.com">bioinfoflow.com</a> · <a href="https://github.com/lewismessthecode/BioinfoFlow">GitHub</a> · Python、TypeScript、FastAPI、Next.js、Docker</p>
+<p>用户用自然语言描述分析任务。Agent 读取项目文件，准备输入和参数。用户批准后，Agent 提交 Nextflow 或 WDL 任务，然后跟踪日志并解释结果。数据和运行环境都留在用户自己的机器或服务器上。</p>
+<ul>
+<li>自研 Agent 运行时。会话持久化，历史只追加。模型只用 <code>read</code>、<code>bash</code>、<code>edit</code>、<code>write</code>、<code>ask_user</code> 等少量通用工具，经 CLI 调用平台能力。</li>
+<li>运行时支持上下文压缩、重试、取消和断点恢复。权限分三级：改动需确认、危险操作需确认、完全访问。</li>
+<li>后端用 FastAPI 和 Typer CLI。执行层抽象出 Nextflow 与 MiniWDL 两套引擎。</li>
+<li>常驻调度器负责排队、资源检查、重试、超时和清理。运行状态经 SSE 和 WebSocket 推送到前端。</li>
+<li>前端用 Next.js。页面包括工作区、仪表盘、Agent、工作流、运行记录（日志、DAG、产物）、镜像管理、调度器和设置。</li>
+<li>支持 SSH 远程主机：保存连接配置、测试主机、在浏览器内开终端，并可把选定主机交给 Agent 操作。远程 Agent 命令在 Bubblewrap 沙盒中执行。</li>
+<li>用 Docker Compose 打包，一行命令安装。GitHub 上已发布 v0.1.0（2026.07）和 v0.2.0（2026.07）。</li>
+<li>仓库附带 nf-core/rnaseq 示例、WDL 测试用例和 NVIDIA Parabricks WGS 示例，可在单张消费级 GPU（如 RTX 4080 SUPER）上运行 GPU 流程。</li>
+</ul>
+<h3>Trove</h3>
+<p>GitHub Star 仓库工作台。MIT 开源。2026.11。</p>
+<p><a href="https://github.com/lewismessthecode/trove">GitHub</a> · TypeScript、Next.js、React、SQLite</p>
+<p>Trove 在自己的机器上整理你在 GitHub 上 Star 过的仓库。数据存在本地 SQLite。</p>
+<ul>
+<li>用标签和收藏夹整理仓库。配置模型后，AI 可以自动分类。</li>
+<li>仓库关系图按共享的标签、收藏夹和 topic 连接仓库，用力导向布局绘制。</li>
+<li>Radar 从 GitHub 搜索和 Hacker News 等来源推荐新仓库。</li>
+<li>Releases 收件箱汇总正在使用的仓库的新版本，并标出可能的破坏性更新。</li>
+<li>AI 为仓库生成健康报告。</li>
+<li>内置 MCP 服务，编程助手可用 token 调用。命令行工具负责签发和吊销 token。</li>
+<li>模型支持 OpenRouter、OpenAI、Anthropic、DeepSeek、本地 Ollama 和 OpenAI 兼容服务。Ollama 地址只接受本机回环地址。</li>
+<li>界面支持中英文。可以用 Docker Compose 部署。</li>
+</ul>
+<h3>Loadout</h3>
+<p>macOS 上的 AI Agent 技能管理工具。独立开发，MIT 开源。2026.10。</p>
+<p><a href="https://github.com/lewismessthecode/loadout">GitHub</a> · Rust、Tauri 2、React、SQLite</p>
+<ul>
+<li>已发布 v0.2.1 Universal 版本，可在 Apple Silicon 和 Intel Mac 上原生运行。</li>
+<li>扫描 <code>~/.agents</code> 和 Claude Code、Codex、Cursor、Gemini、OpenCode 的技能目录，合并成一份去重列表。软链接只算一份技能、多处安装。</li>
+<li>在应用内安装、更新和删除技能。更新前保留旧目录作为备份，删除的文件进废纸篓。</li>
+<li>用 Rust 实现目录扫描、防抖文件监听和会话日志解析。使用记录增量写入 SQLite，只存技能名、Agent 和日期，不复制提示词和回复。</li>
+<li>根据使用记录生成热力图。界面支持中英文，以及浅色、深色和跟随系统三种外观。</li>
+<li>不申请完全磁盘访问、自动化、辅助功能或录屏权限。</li>
+</ul>
+<h3>Folio</h3>
+<p>本地 Markdown 阅读库，用来读 X 上收藏的长文。Apache-2.0 开源，macOS Apple Silicon 预览版。2026.11。</p>
+<p><a href="https://github.com/lewismessthecode/folio-reader">GitHub</a> · TypeScript、Electron、React</p>
+<ul>
+<li>通过 Chrome 扩展，从 X 收藏里导入长文。导入在后台请求，不打开或刷新 X 标签页。</li>
+<li>文章存成本地 Markdown，图片也存到本地。同一文件夹可以直接用 Obsidian 或 Cursor 打开。</li>
+<li>按主题和阅读状态浏览文章，可以打分和加批注。</li>
+<li>可选接入自有模型 API，把选中的文章整理成主题笔记和卡片。保存前由用户审核。API key 用系统安全存储加密。</li>
+<li>界面支持中英文，以及浅色、深色和跟随系统三种外观。</li>
+</ul>
+<h2>工作经历</h2>
+<h3>深圳华大基因 · 软件开发工程师</h3>
+<p>2022.07 至 2026.10</p>
+<h4>私有化大模型服务（2026.06 – 2026.08，独立完成）</h4>
+<p>我一人完成这套服务的设计、部署、监控和文档。</p>
+<ul>
+<li>在部门 8 卡 H20 服务器上用 vLLM 部署 DeepSeek-V4-Flash。配置为 8 卡张量并行、专家并行和 FP8 KV cache。服务以 OpenAI 兼容 API 提供给 OpenWebUI、BioinfoFlow 和同事的项目。</li>
+<li>固定 vLLM 镜像 digest，避免重新拉取时版本漂移。</li>
+<li>搭建 LiteLLM 网关。每个同事、项目和服务各用一个 virtual key，原始模型 key 不外发。每个 key 可限制每分钟请求数、每分钟 token 数、预算和并行请求数。</li>
+<li>写了 key 管理脚本，覆盖创建、查看、禁用、恢复和轮换。</li>
+<li>用 Prometheus 采集指标，用 DCGM exporter 采集 GPU 指标，用 Grafana 做面板。</li>
+<li>自建两个 Grafana 面板。容量面板显示健康状态、估算剩余并发、运行和排队请求数、KV cache 使用率、TTFT P95 和 TPOT P95。用量面板按 key 统计请求数和 token 数。</li>
+<li>发现服务器时钟比真实时间快约 8 小时后，在面板查询中加时间补偿，并写明修复 NTP 后要删除补偿。</li>
+<li>编写运维手册，覆盖服务启停、key 管理、面板解读和排障步骤。</li>
+</ul>
+<h4>OpenWebUI 部门知识库</h4>
+<ul>
+<li>部署 OpenWebUI v0.9.6，作为部门知识库、聊天入口和 RAG 编排层。聊天、embedding、文件解析和向量检索都在内网运行。</li>
+<li>PostgreSQL 存用户、聊天和权限数据，PGVector 存知识库向量。Redis 管会话、Token 撤销和 WebSocket。Apache Tika 解析 Word、PDF、PPT 和 Excel。</li>
+<li>用 vLLM 在同一台服务器的一张 GPU 上部署 BGE-M3 embedding 模型，输出 1024 维向量。为给它腾出显存，把 DeepSeek 的显存占用比例从 0.90 调到 0.85。</li>
+<li>开启混合检索，设定 chunk 大小、重叠和 top-k 初始值。</li>
+<li>编写生产部署文档，覆盖 Docker Compose 配置、上线验证、备份和恢复、升级、多实例扩容条件和常见故障。</li>
+<li>上线检查清单包括用真实业务问题做召回测试，以及多用户同时访问时的稳定性检查。</li>
+</ul>
+<h4>BioinfoFlow 内部部署</h4>
+<ul>
+<li>把 BioinfoFlow v0.2.0 部署到同一台 H20 服务器，与 OpenWebUI 共用 LiteLLM 网关和 DeepSeek 服务。</li>
+<li>为同事整理可复用的 Agent 技能，覆盖测序流程、WGS 和平台运维。</li>
+</ul>
+<h4>医学 LLM 评测与领域微调</h4>
+<ul>
+<li>2023.12 至 2024.02，搭建 LLM 流水线，从变异数据中提取 ACMG 证据项，辅助临床变异解读。</li>
+<li>建立 Prompt 评测流程，代码在 GitHub：<a href="https://github.com/lewismessthecode/medprompt-eval">medprompt-eval</a>。</li>
+<li>用约 10,000 条 HPO 数据微调 LLaMA-7B 和 BioGPT，完成数据清洗、指令构造、训练和效果评估。</li>
+</ul>
+<h4>生产级 NGS 数据流程</h4>
+<ul>
+<li>参与 10 多条生产级 NGS 流程的建设和维护，包括泛癌、NIPT、WGS 和遗传性耳聋。流程覆盖质控、比对、变异检测、注释和报告。</li>
+<li>推行流程工程规范：Git 版本管理、输入输出约定、容器化运行环境和单元测试。</li>
+<li>在 HPC 集群上运行任务并排查问题。</li>
+<li>整理异常样本、参数边界和常见失败模式，让生产运行更稳定，结果更容易复现。</li>
+</ul>
+<h2>专业技能</h2>
+<table>
+<thead>
+<tr>
+<th>方向</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI / LLM</td>
+<td>Agent 运行时与工具调用、Prompt Engineering、LLM 评测与 Benchmark 设计、领域微调、训练数据构建、RAG；日常使用 Claude Code、Codex、Cursor</td>
+</tr>
+<tr>
+<td>LLM 部署与运维</td>
+<td>vLLM、LiteLLM、OpenWebUI、PGVector、BGE-M3、Apache Tika、Prometheus、Grafana、DCGM</td>
+</tr>
+<tr>
+<td>编程语言</td>
+<td>Python、TypeScript、Rust、Bash</td>
+</tr>
+<tr>
+<td>后端与数据</td>
+<td>FastAPI、Typer、SSE / WebSocket、PostgreSQL、SQLite、Redis</td>
+</tr>
+<tr>
+<td>前端与桌面</td>
+<td>Next.js、React、Tailwind CSS、Tauri 2、Electron</td>
+</tr>
+<tr>
+<td>基础设施</td>
+<td>Docker / Compose、Linux、Git、SSH、HPC、NVIDIA GPU</td>
+</tr>
+<tr>
+<td>工作流与领域</td>
+<td>Nextflow、nf-core、WDL、Snakemake、GATK4、Parabricks；基因组与临床变异数据</td>
+</tr>
+<tr>
+<td>英语</td>
+<td>CET-6</td>
+</tr>
+</tbody>
+</table>
+<h2>荣誉</h2>
+<ul>
+<li>2023 年阿里云天池首届世界科学智能大赛，生命科学赛道冠军和创新奖。题目是用 DNA 甲基化数据预测生物学年龄和疾病风险。</li>
+</ul>
+<h2>教育</h2>
+<ul>
+<li>华南农业大学，分子生物学，本科和硕士，2015.09 至 2022.06。</li>
+</ul>
+<h2>论文</h2>
+<ul>
+<li>合著：Fast and accurate DNASeq variant calling workflow composed of LUSH toolkit. <em>Human Genomics</em>, 2024.</li>
+</ul>
+</main>
+</body>
+</html>

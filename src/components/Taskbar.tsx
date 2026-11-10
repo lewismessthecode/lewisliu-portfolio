@@ -13,8 +13,8 @@ export default function Taskbar() {
       <button className={`win98-start-btn${startOpen ? ' win98-start-btn--active' : ''}`} onClick={() => setStartOpen((open) => !open)} aria-expanded={startOpen} aria-haspopup="menu">
         <span className="win98-windows-logo" aria-hidden="true"><span className="win98-logo-red" /><span className="win98-logo-green" /><span className="win98-logo-blue" /><span className="win98-logo-yellow" /></span>Start
       </button>
-      {(['portfolio', 'terminal'] as const).map((id) => windows[id] !== 'closed' && <button key={id} className={`win98-task-btn${activeWindow === id ? ' win98-task-btn--active' : ''}`} onClick={() => selectTask(id)} aria-pressed={activeWindow === id}>
-        <span className={id === 'portfolio' ? 'window-folder-icon' : 'win98-terminal-icon'} aria-hidden="true" />{id === 'portfolio' ? 'Portfolio' : 'Terminal'}
+      {([{ id: 'portfolio', label: 'Portfolio', icon: 'window-folder-icon' }, { id: 'resume', label: 'Resume', icon: 'window-document-icon' }, { id: 'terminal', label: 'Terminal', icon: 'win98-terminal-icon' }] as const).map(({ id, label, icon }) => windows[id] !== 'closed' && <button key={id} className={`win98-task-btn${activeWindow === id ? ' win98-task-btn--active' : ''}`} onClick={() => selectTask(id)} aria-pressed={activeWindow === id}>
+        <span className={icon} aria-hidden="true" />{label}
       </button>)}
       <SystemTray />
     </div>

@@ -10,6 +10,7 @@
   --win98-title-text: #ffffff;
   --win98-highlight: #0a246a;
   --win98-sidebar-blue: #0b2f7e;
+  --titlebar-height: 28px;
 }
 
 /* ─── Beveled Border Utilities ─── */
@@ -54,7 +55,7 @@
 }
 
 .win98-titlebar {
-  height: 28px;
+  height: var(--titlebar-height);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, transparent 60%),
     linear-gradient(90deg, var(--win98-title-blue-active) 0%, #1084d0 100%);
@@ -105,7 +106,7 @@
   color: var(--win98-title-text);
   font-size: 12px;
   font-weight: 700;
-  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-family: 'Tahoma', 'MS Sans Serif', sans-serif;
   letter-spacing: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -146,8 +147,15 @@
   outline-offset: -4px;
 }
 
-.win98-btn-minimize span {
-  margin-top: 4px;
+.win98-btn-minimize { position: relative; color: transparent; }
+.win98-btn-minimize::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 3px;
+  height: 2px;
+  background: #000;
 }
 
 /* ─── Desktop Layout ─── */

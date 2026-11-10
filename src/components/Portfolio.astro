@@ -23,7 +23,14 @@ const featured = data.projects.filter((project) => project.featuredOrder !== und
         {featured.map((project, index) => (
           <article class="portfolio-project">
             <a class="portfolio-image" href={project.github} aria-label={`View ${project.title} on GitHub`}>
-              <span class="portfolio-image-title">{project.title}</span>
+              <span class="portfolio-frame-bar" aria-hidden="true">
+                <span class="portfolio-frame-title">{project.title}</span>
+                <span class="portfolio-frame-buttons">
+                  <span class="portfolio-frame-btn portfolio-frame-btn-minimize"></span>
+                  <span class="portfolio-frame-btn">□</span>
+                  <span class="portfolio-frame-btn">×</span>
+                </span>
+              </span>
               <img src={project.image} alt={`${project.title} application screenshot`} loading={index === 0 ? 'eager' : 'lazy'} decoding="async" />
             </a>
             <div class="portfolio-project-info">

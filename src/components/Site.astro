@@ -2,13 +2,18 @@
 import Desktop from './Desktop'
 import Portfolio from './Portfolio.astro'
 import { getSiteData, profile } from '../lib/site-data'
+import enResumeHtml from '../data/resume/resume.en.html?raw'
+import zhResumeHtml from '../data/resume/resume.zh.html?raw'
 import '../styles/terminal.css'
 import '../styles/win98.css'
 import '../styles/backgrounds.css'
 import '../styles/matrix-rain.css'
 import '../styles/portfolio.css'
+import '../styles/resume.css'
 import '../styles/desktop.css'
 const data = await getSiteData()
+const resumeBody = (html: string) => html.match(/<main>([\s\S]*?)<\/main>/)?.[1].trim() ?? ''
+const resumePages = { en: resumeBody(enResumeHtml), zh: resumeBody(zhResumeHtml) }
 ---
 <!doctype html>
 <html lang="en">
@@ -26,6 +31,6 @@ const data = await getSiteData()
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <Desktop client:load data={data}><Portfolio /></Desktop>
+    <Desktop client:load data={data} resumePages={resumePages}><Portfolio /></Desktop>
   </body>
 </html>

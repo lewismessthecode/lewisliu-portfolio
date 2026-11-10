@@ -4,7 +4,7 @@ description: "A local reading library for saved X Articles."
 tags: ["macOS", "Reading", "Local-first"]
 github: "https://github.com/lewismessthecode/folio-reader"
 order: 8
-featuredOrder: 2
+featuredOrder: 4
 image: "/projects/folio.webp"
 ---
 
